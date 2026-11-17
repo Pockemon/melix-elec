@@ -2,7 +2,7 @@ import {
   BoxGeometry,
   BufferGeometry,
   CylinderGeometry,
-  DodecahedronGeometry,
+  IcosahedronGeometry,
   Box3,
   Group,
   Mesh,
@@ -21,6 +21,7 @@ const C = {
   sage: mat(0xd7dec9),
   sand: mat(0xeadbc3),
   dark: mat(0x6e5a4d),
+  gold: mat(0xe3b982),
 };
 
 interface Piece {
@@ -31,9 +32,10 @@ interface Piece {
   span: [number, number];
 }
 
-function part(geo: BufferGeometry, material: MeshStandardMaterial, y: number, x = 0): Mesh {
+function part(geo: BufferGeometry, material: MeshStandardMaterial, y: number, x = 0, z = 0, rotZ = 0): Mesh {
   const m = new Mesh(geo, material);
-  m.position.set(x, y, 0);
+  m.position.set(x, y, z);
+  m.rotation.z = rotZ;
   m.castShadow = true;
   m.receiveShadow = true;
   return m;
@@ -41,58 +43,94 @@ function part(geo: BufferGeometry, material: MeshStandardMaterial, y: number, x 
 
 /** Tenon : petit cylindre à facettes, visible entre deux pièces tant qu'elles sont écartées. */
 function tenon(y: number, x = 0, z = 0): Mesh {
-  const t = part(new CylinderGeometry(0.09, 0.09, 0.5, 6), C.dark, y, x);
-  t.position.z = z;
-  return t;
+  return part(new CylinderGeometry(0.09, 0.09, 0.5, 6), C.dark, y, x, z);
 }
+
+const box = (w: number, h: number, d: number) => new BoxGeometry(w, h, d);
+const gem = (r: number, detail = 0) => new IcosahedronGeometry(r, detail);
 
 function buildFigure() {
   const root = new Group();
   const pieces: Piece[] = [];
-  const add = (children: Mesh[], explode: [number, number, number], span: [number, number], at: [number, number, number] = [0, 0, 0]) => {
+  const add = (children: Mesh[], explode: [number, number, number], span: [number, number]) => {
     const group = new Group();
     children.forEach((c) => group.add(c));
-    group.position.set(...at);
     root.add(group);
     pieces.push({ group, explode: new Vector3(...explode), span });
-    return group;
   };
   const rest = new Map<Group, Vector3>();
 
   // Socle
   add([part(new CylinderGeometry(1.25, 1.4, 0.3, 8), C.sand, 0.15), tenon(0.4, -0.4), tenon(0.4, 0.4)], [0, -0.4, 0], [0, 0.2]);
-  // Jambes
-  add([part(new BoxGeometry(0.5, 1.7, 0.55), C.apricot, 1.15, -0.4), tenon(2.05, -0.4)], [-0.5, -0.1, 0.5], [0.1, 0.4]);
-  add([part(new BoxGeometry(0.5, 1.7, 0.55), C.apricot, 1.15, 0.4), tenon(2.05, 0.4)], [0.5, -0.1, 0.5], [0.1, 0.4]);
-  // Torse
+  // Jambes : botte, jambe, tenon
+  for (const x of [-0.4, 0.4]) {
+    add(
+      [part(box(0.58, 0.35, 0.85), C.dark, 0.475, x, 0.12), part(box(0.5, 1.35, 0.55), C.apricot, 1.325, x), tenon(2.05, x)],
+      [x * 1.25, -0.1, 0.5],
+      [0.1, 0.4],
+    );
+  }
+  // Torse : buste, ceinture + boucle, baudrier croisé, boutons
   add(
     [
       part(new CylinderGeometry(0.85, 0.7, 1.7, 6), C.rose, 2.95),
-      part(new BoxGeometry(1.5, 0.14, 0.8), C.dark, 2.2),
-      part(new BoxGeometry(0.2, 0.2, 0.1), C.cream, 3.1, -0.3),
-      part(new BoxGeometry(0.2, 0.2, 0.1), C.cream, 3.1, 0.3),
-      part(new BoxGeometry(0.2, 0.2, 0.1), C.cream, 2.65, -0.3),
-      part(new BoxGeometry(0.2, 0.2, 0.1), C.cream, 2.65, 0.3),
+      part(box(1.5, 0.16, 0.86), C.dark, 2.2),
+      part(box(0.28, 0.22, 0.08), C.gold, 2.2, 0, 0.44),
+      part(box(0.2, 1.75, 0.07), C.cream, 3.0, 0, 0.74, -0.52),
+      part(box(0.16, 0.16, 0.1), C.gold, 3.35, -0.42, 0.72),
+      part(box(0.16, 0.16, 0.1), C.gold, 2.7, 0.42, 0.72),
       tenon(3.9),
     ],
     [0, 0.3, 0.2],
     [0.3, 0.65],
-  ).children.slice(2, 6).forEach((b) => (b.position.z = 0.72));
-  // Bras
-  add([part(new BoxGeometry(0.42, 1.5, 0.45), C.sage, 2.95, -1.35), tenon(3.75, -1.35)], [-1.3, 0.3, 0.2], [0.5, 0.8]);
-  add([part(new BoxGeometry(0.42, 1.5, 0.45), C.sage, 2.95, 1.35), tenon(3.75, 1.35)], [1.3, 0.3, 0.2], [0.5, 0.8]);
-  // Tête
-  add([part(new DodecahedronGeometry(0.62, 0), C.cream, 4.35)], [0, 0.9, 0.3], [0.65, 0.9]);
-  // Chapeau : calot + visière
+  );
+  // Bras : épaule, manche, poignet, avant-bras, main
+  for (const s of [-1, 1]) {
+    const x = s * 1.25;
+    add(
+      [
+        part(gem(0.42, 1), C.sage, 3.68, x),
+        part(box(0.42, 1.0, 0.46), C.sage, 3.25, x),
+        part(box(0.48, 0.12, 0.52), C.dark, 2.7, x),
+        part(box(0.36, 0.6, 0.38), C.cream, 2.34, x),
+        part(gem(0.24, 1), C.rose, 1.95, x),
+        tenon(3.95, x),
+      ],
+      [s * 1.3, 0.3, 0.2],
+      [0.5, 0.8],
+    );
+  }
+  // Tête : crâne facetté, visage (yeux, sourcils, nez, joues, sourire), oreilles
+  add(
+    [
+      part(gem(0.64, 1), C.cream, 4.35),
+      part(box(0.1, 0.15, 0.08), C.dark, 4.42, -0.21, 0.57),
+      part(box(0.1, 0.15, 0.08), C.dark, 4.42, 0.21, 0.57),
+      part(box(0.2, 0.05, 0.06), C.dark, 4.6, -0.21, 0.55),
+      part(box(0.2, 0.05, 0.06), C.dark, 4.6, 0.21, 0.55),
+      part(box(0.11, 0.18, 0.16), C.apricot, 4.3, 0, 0.62),
+      part(box(0.16, 0.1, 0.06), C.rose, 4.24, -0.36, 0.5),
+      part(box(0.16, 0.1, 0.06), C.rose, 4.24, 0.36, 0.5),
+      part(box(0.3, 0.05, 0.06), C.dark, 4.08, 0, 0.57),
+      part(gem(0.15, 0), C.cream, 4.35, -0.64),
+      part(gem(0.15, 0), C.cream, 4.35, 0.64),
+    ],
+    [0, 0.9, 0.3],
+    [0.65, 0.9],
+  );
+  // Chapeau : shako (bandeau, plaque, visière, pompon)
   add(
     [
       part(new CylinderGeometry(0.5, 0.62, 1.1, 6), C.sage, 5.4),
-      part(new CylinderGeometry(0.78, 0.78, 0.1, 6), C.apricot, 4.82),
-      part(new BoxGeometry(0.6, 0.12, 0.06), C.cream, 5.2),
+      part(new CylinderGeometry(0.8, 0.8, 0.1, 6), C.apricot, 4.82),
+      part(new CylinderGeometry(0.64, 0.64, 0.14, 6), C.dark, 4.98),
+      part(box(0.7, 0.07, 0.36), C.dark, 4.84, 0, 0.8),
+      part(box(0.26, 0.3, 0.06), C.gold, 5.35, 0, 0.58),
+      part(gem(0.2, 1), C.rose, 6.05),
     ],
     [0, 1.7, 0.2],
     [0.8, 1],
-  ).children[2].position.z = 0.5;
+  );
 
   pieces.forEach((p) => rest.set(p.group, p.group.position.clone()));
   return { root, pieces, rest };
@@ -150,7 +188,7 @@ export function initHero(): void {
   const fit = () => {
     const cam = s.camera;
     const t = Math.tan((cam.fov * Math.PI) / 360);
-    const usable = 0.76;
+    const usable = 0.66; // marge : inclinaison au pointeur, flottement, perspective
     const top = 0.18; // bande haute libre (fraction du cadre) réservée au repère « PIÈCE 03 / 08 »
     const dist = Math.max(halfH / (t * usable), halfW / (t * cam.aspect * usable)) + halfW;
     const half = t * (dist - halfW); // demi-hauteur visible au plan avant de la figurine
