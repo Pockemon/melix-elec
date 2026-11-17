@@ -1,0 +1,19 @@
+{
+  "deploymentType": "web-service",
+  "platform": "github-pages",
+  "probeUrl": "https://pockemon.github.io/melix-elec/health.json",
+  "smokeProbes": [
+    {
+      "name": "accueil",
+      "url": "https://pockemon.github.io/melix-elec/",
+      "expectStatus": 200,
+      "expectBody": "Vos créations prennent une autre dimension"
+    }
+  ],
+  "userInterface": "VISUAL",
+  "design": {
+    "provider": "FIGMA",
+    "fileRef": "mqrcZMrSenBLMdWJlZ4gxD",
+    "nodeRefs": ["2:14", "3:2"]
+  }
+}
