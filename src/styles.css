@@ -24,6 +24,7 @@
 html { scroll-behavior: smooth; scroll-padding-top: 90px; }
 body { margin: 0; overflow-x: clip; background: var(--page); color: var(--text); font: 400 16px/1.5 var(--sans); -webkit-font-smoothing: antialiased; }
 img { display: block; max-width: 100%; }
+[hidden] { display: none !important; } /* img { display: block } annulait l’attribut hidden : le repli PNG restait affiché sous le canvas 3D */
 a { color: inherit; }
 h1, h2, h3, p, dl, dd, ol, ul { margin: 0; padding: 0; }
 ol, ul { list-style: none; }
