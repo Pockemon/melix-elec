@@ -13,6 +13,18 @@ form.addEventListener('submit', (e) => {
   window.location.href = buildMailto(fields);
 });
 
+const menuBtn = document.getElementById('menu-btn') as HTMLButtonElement;
+const menu = document.getElementById('menu')!;
+const setMenu = (open: boolean) => {
+  menu.classList.toggle('open', open);
+  menuBtn.setAttribute('aria-expanded', String(open));
+};
+menuBtn.addEventListener('click', () => setMenu(!menu.classList.contains('open')));
+menu.addEventListener('click', (e) => {
+  if ((e.target as HTMLElement).closest('a')) setMenu(false);
+});
+document.addEventListener('keydown', (e) => e.key === 'Escape' && setMenu(false));
+
 document.getElementById('mentions-link')?.addEventListener('click', () => {
   document.getElementById('mentions')!.hidden = false;
 });

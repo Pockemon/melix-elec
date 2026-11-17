@@ -3,6 +3,7 @@ import {
   BufferGeometry,
   CylinderGeometry,
   DodecahedronGeometry,
+  Box3,
   Group,
   Mesh,
   MeshStandardMaterial,
@@ -121,9 +122,6 @@ export function initHero(): void {
   ground.receiveShadow = true;
   s.scene.add(ground);
 
-  s.camera.position.set(0, 3.6, 17);
-  s.camera.lookAt(0, 3.4, 0);
-
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const ease = (t: number) => t * t * (3 - 2 * t);
   const pointer = { x: 0, y: 0 };
@@ -139,11 +137,36 @@ export function initHero(): void {
     }
   };
 
+  // Cadrage sur la boîte englobante de la vue éclatée (marge ~10 % par bord), recalculé au redimensionnement.
+  shown = 0;
+  pose();
+  root.updateMatrixWorld(true);
+  const box = new Box3().setFromObject(root);
+  shown = progress;
+  pose();
+  const cy = (box.min.y + box.max.y) / 2;
+  const halfH = (box.max.y - box.min.y) / 2;
+  const halfW = Math.max(Math.abs(box.min.x), Math.abs(box.max.x), Math.abs(box.min.z), Math.abs(box.max.z));
+  const fit = () => {
+    const cam = s.camera;
+    const t = Math.tan((cam.fov * Math.PI) / 360);
+    const usable = 0.8;
+    const dist = Math.max(halfH / (t * usable), halfW / (t * cam.aspect * usable)) + halfW;
+    cam.position.set(0, cy + 0.4, dist);
+    cam.lookAt(0, cy, 0);
+    cam.updateMatrixWorld();
+  };
+  new ResizeObserver(() => {
+    fit();
+    s.render();
+  }).observe(canvas);
+  fit();
+
   if (reduced) {
     pose();
     holder.rotation.y = -0.35;
     s.render();
-    new ResizeObserver(() => s.render()).observe(canvas);
+    s.render();
     return;
   }
 
