@@ -1,0 +1,116 @@
+# Foreman-EX — exécutant Claude Code. Déclenché par le commentaire de consigne que Foreman publie
+# (mention @claude + marqueur foreman-launch) ; s'exécute sur le poste (runner `claude-worker`),
+# avec la connexion Claude Code déjà établie : aucun secret dans le dépôt ni dans le workflow.
+name: foreman-claude
+on:
+  issue_comment:
+    types: [created]
+permissions:
+  contents: read
+jobs:
+  worker:
+    if: >-
+      github.event.comment.user.login == github.repository_owner &&
+      contains(github.event.comment.body, '@claude') &&
+      contains(github.event.comment.body, 'foreman-launch:') &&
+      contains(github.event.comment.body, 'Branche impos') &&
+      !contains(github.event.comment.body, 'foreman-review-only:') &&
+      !contains(github.event.comment.body, 'foreman-runtime-proof:')
+    runs-on: [self-hosted, Windows, claude-worker]
+    timeout-minutes: 240
+    concurrency:
+      group: foreman-claude-${{ github.event.issue.number }}
+      cancel-in-progress: false
+    env:
+      COMMENT_BODY: ${{ github.event.comment.body }}
+      ISSUE: ${{ github.event.issue.number }}
+      REPO: ${{ github.repository }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - name: Script de l'exécutant (branche par défaut)
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/foreman
+          path: foreman-runner
+          persist-credentials: false
+      - name: Claude Code
+        shell: powershell
+        run: '& ./foreman-runner/.github/foreman/claude-worker.ps1'
+      - name: Refus nommé si l'exécution est interrompue
+        if: failure() || cancelled()
+        shell: powershell
+        run: |
+          gh issue comment $env:ISSUE -R $env:REPO --body "Exécutant Claude Code interrompu ($env:RUN_URL).`n`nFOREMAN-WORKER-OUTCOME: DECLINED — exécution en échec ou délai de 240 min dépassé."
+  # MODE REVUE : la demande de revue indépendante de Foreman (mention @claude + marqueur foreman-review-only) lance une session
+  # Claude Code distincte de l'auteur, en LECTURE SEULE sur le candidat exact. Elle publie [FOREMAN_REVIEW_RESULT] {json} ;
+  # Foreman ne l'accepte que si requestId, baseSha et candidateSha correspondent et si reviewerRunUrl n'est pas une exécution d'auteur.
+  review:
+    if: >-
+      github.event.comment.user.login == github.repository_owner &&
+      contains(github.event.comment.body, '@claude') &&
+      contains(github.event.comment.body, 'foreman-review-only:') &&
+      !contains(github.event.comment.body, 'foreman-launch:') &&
+      !contains(github.event.comment.body, 'foreman-runtime-proof:')
+    runs-on: [self-hosted, Windows, claude-worker]
+    timeout-minutes: 90
+    concurrency:
+      group: foreman-claude-review-${{ github.event.issue.number }}
+      cancel-in-progress: false
+    env:
+      FOREMAN_MODE: review
+      COMMENT_BODY: ${{ github.event.comment.body }}
+      ISSUE: ${{ github.event.issue.number }}
+      REPO: ${{ github.repository }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - name: Script de l'exécutant (branche par défaut)
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/foreman
+          path: foreman-runner
+          persist-credentials: false
+      - name: Revue Claude Code (lecture seule)
+        shell: powershell
+        run: '& ./foreman-runner/.github/foreman/claude-worker.ps1'
+      - name: Indisponibilité nommée si la revue est interrompue
+        if: failure() || cancelled()
+        shell: powershell
+        run: |
+          gh issue comment $env:ISSUE -R $env:REPO --body "Revue indépendante interrompue ($env:RUN_URL).`n`nFOREMAN-REVIEW-OUTCOME: PROVIDER_UNAVAILABLE — exécution de revue en échec ou délai de 90 min dépassé."
+  # MODE PREUVE : la mission de preuve runtime de Foreman (mention @claude + marqueur foreman-runtime-proof) lance une session
+  # Claude Code SANS accès en écriture au dépôt (aucun push, aucun commit, aucune branche) sur la révision demandée. Elle joue
+  # le scénario réel sur le poste (navigateur headless, Blender, Bambu Studio, Edge) et publie « Preuve runtime » puis
+  # FOREMAN-RUNTIME-PROOF {json} ; Foreman ne l'accepte que postérieure à sa demande, signée du propriétaire, avec l'exécution citée.
+  proof:
+    if: >-
+      github.event.comment.user.login == github.repository_owner &&
+      contains(github.event.comment.body, '@claude') &&
+      contains(github.event.comment.body, 'foreman-runtime-proof:') &&
+      !contains(github.event.comment.body, 'foreman-launch:') &&
+      !contains(github.event.comment.body, 'foreman-review-only:')
+    runs-on: [self-hosted, Windows, claude-worker]
+    timeout-minutes: 120
+    concurrency:
+      group: foreman-claude-proof-${{ github.event.issue.number }}
+      cancel-in-progress: false
+    env:
+      FOREMAN_MODE: proof
+      COMMENT_BODY: ${{ github.event.comment.body }}
+      ISSUE: ${{ github.event.issue.number }}
+      REPO: ${{ github.repository }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - name: Script de l'exécutant (branche par défaut)
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/foreman
+          path: foreman-runner
+          persist-credentials: false
+      - name: Preuve runtime Claude Code (sans écriture du dépôt)
+        shell: powershell
+        run: '& ./foreman-runner/.github/foreman/claude-worker.ps1'
+      - name: Refus nommé si la preuve est interrompue
+        if: failure() || cancelled()
+        shell: powershell
+        run: |
+          gh issue comment $env:ISSUE -R $env:REPO --body "Preuve runtime non rendue ($env:RUN_URL).`n`nFOREMAN-RUNTIME-OUTCOME: REFUSED — exécution de preuve en échec ou délai de 120 min dépassé."
