@@ -3,14 +3,7 @@
 - Fichier Figma : `mqrcZMrSenBLMdWJlZ4gxD` (« MELIX ELEC — Vitrine fabrication 3D grand format »)
 - Desktop 1440 : nœud `2:14`
 - Mobile 390 : nœud `3:2`
-- Variables (collection « MELIX ELEC ») :
-  - graphite/950 `#0E0F11`, graphite/900 `#16181B`, graphite/800 `#1F2226`, graphite/700 `#2C3036`, graphite/500 `#5B616B` ;
-  - os/50 `#F4F0EA`, os/100 `#ECE6DC`, os/300 `#CFC7BA` ;
-  - cuivre/500 `#D96B2B`, cuivre/300 `#F0A06B`.
-- Typographies :
-  - Space Grotesk (titres, en Medium et Bold) ;
-  - Inter (texte courant) ;
-  - IBM Plex Mono (étiquettes techniques, en capitales, interlettrage +8 %).
+- Tokens et typographies : voir `docs/design/SPEC.md` (palette pastel chaude à dominante claire, Instrument Serif pour les titres, DM Sans pour le texte).
 
 ## Règles
 - L'implémenteur ne réinterprète pas le design. Une contrainte technique se résout en préservant l'intention visuelle.
