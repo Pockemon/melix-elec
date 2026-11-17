@@ -150,10 +150,13 @@ export function initHero(): void {
   const fit = () => {
     const cam = s.camera;
     const t = Math.tan((cam.fov * Math.PI) / 360);
-    const usable = 0.8;
+    const usable = 0.76;
+    const top = 0.18; // bande haute libre (fraction du cadre) réservée au repère « PIÈCE 03 / 08 »
     const dist = Math.max(halfH / (t * usable), halfW / (t * cam.aspect * usable)) + halfW;
-    cam.position.set(0, cy + 0.4, dist);
-    cam.lookAt(0, cy, 0);
+    const half = t * (dist - halfW); // demi-hauteur visible au plan avant de la figurine
+    const look = cy + halfH - half + 2 * half * top; // sommet du chapeau sous la bande haute
+    cam.position.set(0, look + 0.4, dist);
+    cam.lookAt(0, look, 0);
     cam.updateMatrixWorld();
   };
   new ResizeObserver(() => {
