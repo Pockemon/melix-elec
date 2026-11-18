@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: '/melix-elec/',
+  base: '/',
   define: {
     // Le modèle n'est requêté que s'il est présent au build : aucune 404 en console.
     __HAS_MODEL__: JSON.stringify(existsSync('public/models/casse-noisette.glb')),
