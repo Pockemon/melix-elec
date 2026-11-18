@@ -175,21 +175,32 @@ export function initHero(): void {
     }
   };
 
-  // Cadrage sur la boîte englobante de la vue éclatée (marge ~10 % par bord), recalculé au redimensionnement.
-  shown = 0;
-  pose();
-  root.updateMatrixWorld(true);
-  const box = new Box3().setFromObject(root);
+  // Cadrage : boîte de la figurine assemblée (plein cadre) et de la vue éclatée ; la caméra passe de l'une à l'autre selon l'assemblage.
+  const measure = (at: number) => {
+    shown = at;
+    pose();
+    root.updateMatrixWorld(true);
+    const b = new Box3().setFromObject(root);
+    return {
+      cy: (b.min.y + b.max.y) / 2,
+      halfH: (b.max.y - b.min.y) / 2,
+      halfW: Math.max(Math.abs(b.min.x), Math.abs(b.max.x), Math.abs(b.min.z), Math.abs(b.max.z)),
+    };
+  };
+  const exploded = measure(0);
+  const built = measure(1);
   shown = progress;
   pose();
-  const cy = (box.min.y + box.max.y) / 2;
-  const halfH = (box.max.y - box.min.y) / 2;
-  const halfW = Math.max(Math.abs(box.min.x), Math.abs(box.max.x), Math.abs(box.min.z), Math.abs(box.max.z));
   const fit = () => {
     const cam = s.camera;
     const t = Math.tan((cam.fov * Math.PI) / 360);
-    const usable = 0.66; // marge : inclinaison au pointeur, flottement, perspective
-    const top = 0.18; // bande haute libre (fraction du cadre) réservée au repère « PIÈCE 03 / 08 »
+    const k = ease(Math.min(1, Math.max(0, shown)));
+    const lerp = (a: number, b: number) => a + (b - a) * k;
+    const cy = lerp(exploded.cy, built.cy);
+    const halfH = lerp(exploded.halfH, built.halfH);
+    const halfW = lerp(exploded.halfW, built.halfW);
+    const usable = 0.86; // marge : inclinaison au pointeur, flottement, perspective
+    const top = 0.1; // bande haute libre (fraction du cadre) réservée au repère « PIÈCE 03 / 08 »
     const dist = Math.max(halfH / (t * usable), halfW / (t * cam.aspect * usable)) + halfW;
     const half = t * (dist - halfW); // demi-hauteur visible au plan avant de la figurine
     const look = cy + halfH - half + 2 * half * top; // sommet du chapeau sous la bande haute
@@ -225,6 +236,7 @@ export function initHero(): void {
     t += dt;
     shown += (progress - shown) * Math.min(1, dt * 5);
     pose();
+    fit();
     // Rotation idle douce + parallaxe au pointeur.
     yaw += (pointer.x * 0.7 + Math.sin(t * 0.5) * 0.25 - yaw) * Math.min(1, dt * 3);
     holder.rotation.y = -0.3 + yaw;

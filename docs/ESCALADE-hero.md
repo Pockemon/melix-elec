@@ -17,4 +17,4 @@ Décision applicable : reprendre l'implémentation sur la branche imposée ; l'e
 Conséquences appliquées :
 - Le héros conserve la scène Three.js à figurine en pièces (issue #1 + docs/design/SPEC.md l.44-52) ; le constat de revue inverse (canvas conditionné au GLB) est écarté.
 - Le repli image (hero-illustration.png sans WebGL ; image de repli + badge pour le casse-noisette) reste en vigueur tant que public/models/casse-noisette.glb est absent.
-- Reste ouvert (constat de revue sur le rendu) : la figurine occupe ≈ 40 % de la hauteur de la carte car le cadrage (src/hero3d.ts, fit()) est calculé sur la boîte de la vue éclatée. Piste dans le périmètre de la SPEC : cadrer sur la figurine assemblée et agrandir progressivement. Non traité ici, aucun test ni rendu n'étant disponible sur ce poste.
+- Cadrage traité (src/hero3d.ts, fit()) : la caméra cadre la figurine assemblée (marge 0,86, bande haute 0,10) et s'éloigne progressivement vers la vue éclatée au scroll 0. Le test health s'exécute désormais dans un répertoire temporaire. Non exécuté ici (dépendances absentes sur ce poste) : captures docs/screenshots non régénérées, rendu à revérifier par Foreman.
