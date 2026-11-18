@@ -1,11 +1,11 @@
 {
   "deploymentType": "web-service",
   "platform": "github-pages",
-  "probeUrl": "https://pockemon.github.io/melix-elec/health.json",
+  "probeUrl": "https://melix-elec.com/health.json",
   "smokeProbes": [
     {
       "name": "accueil",
-      "url": "https://pockemon.github.io/melix-elec/",
+      "url": "https://melix-elec.com/",
       "expectStatus": 200,
       "expectBody": "Vos créations prennent une autre dimension"
     }
