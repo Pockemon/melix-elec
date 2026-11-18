@@ -32,10 +32,10 @@ export function createStage(canvas: HTMLCanvasElement, fov: number): Stage | nul
   const scene = new Scene();
   const camera = new PerspectiveCamera(fov, 1, 0.1, 100);
 
-  // Lumière studio douce : ciel chaud, rebond sable, clé latérale qui projette l'ombre de contact.
-  scene.add(new HemisphereLight(0xfff3e6, 0xe9d3bd, 1.3));
-  scene.add(new AmbientLight(0xffffff, 0.35));
-  const key = new DirectionalLight(0xfff0e0, 2.1);
+  // Lumière studio douce : ciel neutre chaud, rebond champagne, clé latérale qui projette l'ombre de contact.
+  scene.add(new HemisphereLight(0xfffaf2, 0xe6dece, 1.9));
+  scene.add(new AmbientLight(0xffffff, 0.25));
+  const key = new DirectionalLight(0xfff6ea, 2.4);
   key.position.set(3, 6, 4);
   key.castShadow = true;
   key.shadow.mapSize.set(1024, 1024);

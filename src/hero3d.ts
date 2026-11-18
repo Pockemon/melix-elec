@@ -13,15 +13,11 @@ import {
 } from 'three';
 import { createStage } from './stage';
 
-const mat = (color: number) => new MeshStandardMaterial({ color, roughness: 0.92, metalness: 0, flatShading: true });
+const mat = (color: number, roughness = 0.9) => new MeshStandardMaterial({ color, roughness, metalness: 0, flatShading: true });
 const C = {
-  cream: mat(0xf7ebd9),
-  apricot: mat(0xf3c9a8),
-  rose: mat(0xefcfc8),
-  sage: mat(0xd7dec9),
-  sand: mat(0xeadbc3),
-  dark: mat(0x6e5a4d),
-  gold: mat(0xe3b982),
+  ivory: mat(0xf4f1ea), // casse-noisette entièrement blanc ivoire, mat
+  base: mat(0x1b1916), // socle noir
+  bronze: mat(0xa8743f), // tenons
 };
 
 interface Piece {
@@ -43,11 +39,19 @@ function part(geo: BufferGeometry, material: MeshStandardMaterial, y: number, x 
 
 /** Tenon : petit cylindre à facettes, visible entre deux pièces tant qu'elles sont écartées. */
 function tenon(y: number, x = 0, z = 0): Mesh {
-  return part(new CylinderGeometry(0.09, 0.09, 0.5, 6), C.dark, y, x, z);
+  return part(new CylinderGeometry(0.09, 0.09, 0.5, 6), C.bronze, y, x, z);
 }
 
 const box = (w: number, h: number, d: number) => new BoxGeometry(w, h, d);
 const gem = (r: number, detail = 0) => new IcosahedronGeometry(r, detail);
+/** Cylindre à facettes, une face plane vers l'avant (+z), aplati en profondeur. */
+function prism(rTop: number, rBottom: number, h: number, sides: number, depth = 1): BufferGeometry {
+  const g = new CylinderGeometry(rTop, rBottom, h, sides);
+  g.rotateY(Math.PI / sides);
+  g.scale(1, 1, depth);
+  return g;
+}
+const ivory = (geo: BufferGeometry, y: number, x = 0, z = 0, rotZ = 0) => part(geo, C.ivory, y, x, z, rotZ);
 
 function buildFigure() {
   const root = new Group();
@@ -60,73 +64,86 @@ function buildFigure() {
   };
   const rest = new Map<Group, Vector3>();
 
-  // Socle
-  add([part(new CylinderGeometry(1.25, 1.4, 0.3, 8), C.sand, 0.15), tenon(0.4, -0.4), tenon(0.4, 0.4)], [0, -0.4, 0], [0, 0.2]);
-  // Jambes : botte, jambe, tenon
+  // Socle noir
+  add([part(new CylinderGeometry(1.5, 1.65, 0.3, 8), C.base, 0.15), tenon(0.4, -0.4), tenon(0.4, 0.4)], [0, -0.4, 0], [0, 0.2]);
+  // Jambes droites : botte, jambe, tenon
   for (const x of [-0.4, 0.4]) {
     add(
-      [part(box(0.58, 0.35, 0.85), C.dark, 0.475, x, 0.12), part(box(0.5, 1.35, 0.55), C.apricot, 1.325, x), tenon(2.05, x)],
+      [ivory(box(0.6, 0.5, 0.95), 0.55, x, 0.12), ivory(box(0.5, 1.3, 0.55), 1.45, x), tenon(2.1, x)],
       [x * 1.25, -0.1, 0.5],
       [0.1, 0.4],
     );
   }
-  // Torse : buste, ceinture + boucle, baudrier croisé, boutons
-  add(
-    [
-      part(new CylinderGeometry(0.85, 0.7, 1.7, 6), C.rose, 2.95),
-      part(box(1.5, 0.16, 0.86), C.dark, 2.2),
-      part(box(0.28, 0.22, 0.08), C.gold, 2.2, 0, 0.44),
-      part(box(0.2, 1.75, 0.07), C.cream, 3.0, 0, 0.74, -0.52),
-      part(box(0.16, 0.16, 0.1), C.gold, 3.35, -0.42, 0.72),
-      part(box(0.16, 0.16, 0.1), C.gold, 2.7, 0.42, 0.72),
-      tenon(3.9),
-    ],
-    [0, 0.3, 0.2],
-    [0.3, 0.65],
-  );
-  // Bras : épaule, manche, poignet, avant-bras, main
+  // Torse : veste, ceinture + boucle, brandebourgs (3 barrettes + brandebourgs latéraux), boutons
+  const torso = [
+    ivory(prism(0.98, 0.82, 1.7, 8, 0.72), 2.95),
+    ivory(box(1.6, 0.18, 0.74), 2.25),
+    ivory(box(0.3, 0.24, 0.08), 2.25, 0, 0.4),
+    tenon(3.9),
+  ];
+  for (const [y, w] of [[3.55, 0.95], [3.2, 0.9], [2.85, 0.85]] as const) {
+    torso.push(ivory(box(w, 0.09, 0.07), y, 0, 0.6));
+    torso.push(ivory(box(0.12, 0.12, 0.1), y, -w / 2, 0.58), ivory(box(0.12, 0.12, 0.1), y, w / 2, 0.58));
+  }
+  torso.push(ivory(box(0.09, 0.9, 0.06), 3.2, 0, 0.62));
+  add(torso, [0, 0.3, 0.2], [0.3, 0.65]);
+  // Bras le long du corps : épaulette, épaule, manche, poignet, main ; le bras droit tient le sabre
   for (const s of [-1, 1]) {
     const x = s * 1.25;
-    add(
-      [
-        part(gem(0.42, 1), C.sage, 3.68, x),
-        part(box(0.42, 1.0, 0.46), C.sage, 3.25, x),
-        part(box(0.48, 0.12, 0.52), C.dark, 2.7, x),
-        part(box(0.36, 0.6, 0.38), C.cream, 2.34, x),
-        part(gem(0.24, 1), C.rose, 1.95, x),
-        tenon(3.95, x),
-      ],
-      [s * 1.3, 0.3, 0.2],
-      [0.5, 0.8],
-    );
+    const arm = [
+      ivory(box(0.72, 0.12, 0.6), 3.9, x),
+      ivory(box(0.18, 0.3, 0.5), 3.74, x + s * 0.34),
+      ivory(gem(0.38, 1), 3.62, x),
+      ivory(box(0.44, 1.05, 0.46), 3.05, x),
+      ivory(box(0.5, 0.12, 0.52), 2.45, x),
+      ivory(box(0.38, 0.45, 0.4), 2.17, x),
+      ivory(gem(0.24, 1), 1.85, x, 0.04),
+      tenon(3.7, x),
+    ];
+    for (let i = 0; i < 4; i++) arm.push(ivory(box(0.07, 0.22, 0.07), 3.82, x + (i - 1.5) * 0.17, 0.3));
+    if (s === 1) {
+      // Sabre : lame, garde, pommeau, tenue le long de la jambe
+      arm.push(
+        ivory(box(0.09, 1.5, 0.2), 1.1, x, 0.3),
+        ivory(box(0.1, 0.6, 0.14), 2.15, x, 0.3),
+        ivory(box(0.5, 0.1, 0.16), 1.88, x, 0.3),
+        ivory(gem(0.12, 0), 2.5, x, 0.3),
+      );
+    }
+    add(arm, [s * 1.3, 0.3, 0.2], [0.5, 0.8]);
   }
-  // Tête : crâne facetté, visage (yeux, sourcils, nez, joues, sourire), oreilles
+  // Tête : crâne facetté, sourcils, nez, moustache, barbe sculptée, favoris, oreilles
   add(
     [
-      part(gem(0.64, 1), C.cream, 4.35),
-      part(box(0.1, 0.15, 0.08), C.dark, 4.42, -0.21, 0.57),
-      part(box(0.1, 0.15, 0.08), C.dark, 4.42, 0.21, 0.57),
-      part(box(0.2, 0.05, 0.06), C.dark, 4.6, -0.21, 0.55),
-      part(box(0.2, 0.05, 0.06), C.dark, 4.6, 0.21, 0.55),
-      part(box(0.11, 0.18, 0.16), C.apricot, 4.3, 0, 0.62),
-      part(box(0.16, 0.1, 0.06), C.rose, 4.24, -0.36, 0.5),
-      part(box(0.16, 0.1, 0.06), C.rose, 4.24, 0.36, 0.5),
-      part(box(0.3, 0.05, 0.06), C.dark, 4.08, 0, 0.57),
-      part(gem(0.15, 0), C.cream, 4.35, -0.64),
-      part(gem(0.15, 0), C.cream, 4.35, 0.64),
+      ivory(gem(0.64, 1), 4.38),
+      ivory(box(0.22, 0.07, 0.1), 4.52, -0.22, 0.56),
+      ivory(box(0.22, 0.07, 0.1), 4.52, 0.22, 0.56),
+      ivory(gem(0.07, 0), 4.43, -0.21, 0.6),
+      ivory(gem(0.07, 0), 4.43, 0.21, 0.6),
+      ivory(box(0.13, 0.26, 0.2), 4.33, 0, 0.62),
+      ivory(box(0.36, 0.1, 0.14), 4.18, -0.17, 0.6, 0.28),
+      ivory(box(0.36, 0.1, 0.14), 4.18, 0.17, 0.6, -0.28),
+      ivory(gem(0.42, 1), 3.98, 0, 0.3),
+      ivory(box(0.12, 0.45, 0.14), 4.15, -0.5, 0.35),
+      ivory(box(0.12, 0.45, 0.14), 4.15, 0.5, 0.35),
+      ivory(gem(0.15, 0), 4.38, -0.64),
+      ivory(gem(0.15, 0), 4.38, 0.64),
     ],
     [0, 0.9, 0.3],
     [0.65, 0.9],
   );
-  // Chapeau : shako (bandeau, plaque, visière, pompon)
+  // Chapeau : grand shako cylindrique (bandeau, plaque, visière, cordon, pompon)
   add(
     [
-      part(new CylinderGeometry(0.5, 0.62, 1.1, 6), C.sage, 5.4),
-      part(new CylinderGeometry(0.8, 0.8, 0.1, 6), C.apricot, 4.82),
-      part(new CylinderGeometry(0.64, 0.64, 0.14, 6), C.dark, 4.98),
-      part(box(0.7, 0.07, 0.36), C.dark, 4.84, 0, 0.8),
-      part(box(0.26, 0.3, 0.06), C.gold, 5.35, 0, 0.58),
-      part(gem(0.2, 1), C.rose, 6.05),
+      ivory(prism(0.6, 0.66, 1.7, 8), 5.6),
+      ivory(prism(0.72, 0.72, 0.12, 8), 6.5),
+      ivory(prism(0.7, 0.7, 0.14, 8), 4.84),
+      ivory(box(0.8, 0.07, 0.42), 4.8, 0, 0.78),
+      ivory(box(0.34, 0.42, 0.06), 5.4, 0, 0.64),
+      ivory(box(0.16, 0.16, 0.07), 5.4, 0, 0.68),
+      ivory(box(0.5, 0.06, 0.06), 5.95, 0, 0.64),
+      ivory(new CylinderGeometry(0.05, 0.05, 0.25, 6), 6.7),
+      ivory(gem(0.22, 1), 6.9),
     ],
     [0, 1.7, 0.2],
     [0.8, 1],
@@ -155,7 +172,7 @@ export function initHero(): void {
   holder.add(root);
   s.scene.add(holder);
 
-  const ground = new Mesh(new PlaneGeometry(14, 14), new ShadowMaterial({ opacity: 0.18 }));
+  const ground = new Mesh(new PlaneGeometry(14, 14), new ShadowMaterial({ opacity: 0.22 }));
   ground.rotation.x = -Math.PI / 2;
   ground.receiveShadow = true;
   s.scene.add(ground);
