@@ -105,3 +105,29 @@ Consigne : implémenter fidèlement, sans réinterpréter le design.
 
 ## Mobile 390
 Même ordre de sections, colonnes empilées, padding 24, titres en Instrument Serif 40 à 36. Scène 3D de 342 × 380. Réalisations en grille 2 × 2. Formulaire sur une colonne.
+
+## Révision 18/11 — palette noble (décision de Jean, remplace la palette et le héros ci-dessus)
+La palette pastel (pêche, sauge, abricot, terracotta) est caduque. Le fichier Figma a été mis à jour en conséquence.
+
+| Variable | Valeur | Usage |
+|---|---|---|
+| fond/page | #F7F4EE | fond principal |
+| fond/section | #EFE9DF | Prestations, formulaire |
+| fond/carte | #F3EDE3 | cartes, champs, fond du visuel |
+| trait/fin | #E2D8C6 | filets et bordures |
+| texte/principal | #161412 | |
+| texte/fort | #0F0E0D | |
+| texte/secondaire | #5E574F | |
+| texte/tertiaire | #8E867C | assombri à #655E55 dans le code pour le contraste AA |
+| texte/etiquette | #8C5E2E | |
+| texte/inverse | #F7F4EE | |
+| action/principal | #141210 | boutons pleins, texte #F7F4EE, rayon 999 |
+| bronze | #A8743F | tenons |
+| champagne | #E9DCC4 | section Projet phare |
+| noir | #1B1916 | section Sous-traitance, socle |
+| or | #C8A14B | bordures des cartes « En option », accents sur fond noir |
+| sable | #E4D3AE | accent |
+
+- **Sous-traitance** : fond #1B1916, textes inverses.
+- **Héros** : casse-noisette soldat low-poly facetté, entièrement blanc ivoire (#F4F1EA, mat, flatShading, roughness 0,9), d'après le modèle de Jean : grand shako cylindrique, visage à moustache et barbe, épaulettes, veste à brandebourgs, ceinture, bras le long du corps tenant un sabre, jambes droites, bottes, socle noir. Mention « Hauteur 1,20 m ». Vue éclatée et assemblage au défilement inchangés. Repli sans WebGL : `public/images/hero-illustration.png`, capture du canvas assemblé sur fond #F7F4EE ; alt « Casse-noisette soldat low-poly blanc, 1,20 m, imprimé en 3D ».
+- **Section « En option »** (après Prestations) : étiquette « EN OPTION », titre « Des pièces qui vont plus loin. », 3 cartes (fond #F3EDE3, bordure 1 px or, rayon 20), grille 3 colonnes desktop, 1 colonne mobile : QR codes imprimés en 3D · Puces NFC intégrées · Éclairage intégré.

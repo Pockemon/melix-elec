@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MELIX ELEC — Fabrication 3D grand format</title>
+  <meta name="description" content="Pôle fabrication additive en Savoie : sculptures, figurines et décors 3D grand format pour les professionnels." />
+  <meta name="theme-color" content="#F7F4EE" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23141210'/%3E%3C/svg%3E" />
+  <script type="module" src="/src/main.ts"></script>
+</head>
+<body>
+  <a class="skip" href="#contenu">Aller au contenu</a>
+  <header class="nav">
+    <div class="wrap nav-in">
+      <a class="brand" href="#top" aria-label="MELIX ELEC, accueil">
+        <span class="logo" aria-hidden="true"></span>
+        <span><strong>MELIX ELEC</strong><small>FABRICATION 3D GRAND FORMAT</small></span>
+      </a>
+      <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
+      <nav aria-label="Navigation principale" class="links" id="menu">
+        <a href="#realisations">Réalisations</a>
+        <a href="#prestations">Prestations</a>
+        <a href="#sous-traitance">Sous-traitance</a>
+        <a href="#devis">Devis</a>
+        <a class="btn menu-cta" href="#devis">Obtenir un devis professionnel</a>
+      </nav>
+      <a class="btn" href="#devis">Obtenir un devis professionnel</a>
+    </div>
+  </header>
+
+  <main id="contenu">
+    <section class="hero" id="top">
+      <div class="wrap hero-in">
+        <div class="hero-text">
+          <p class="label">Pôle fabrication additive · Savoie</p>
+          <h1>Vos créations prennent une autre dimension.</h1>
+          <p class="lead">Sculptures monumentales, figurines géantes et décors 3D sur mesure. Fabrication additive pour les professionnels de l’événementiel, de la décoration et de la communication.</p>
+          <div class="cta">
+            <a class="btn" href="#devis">Demander une fabrication sur mesure</a>
+            <a class="btn btn-ghost" href="#sous-traitance">Devenir partenaire de production</a>
+          </div>
+        </div>
+        <div class="stage" id="hero-stage">
+          <img class="stage-fallback" id="hero-fallback" src="/images/hero-illustration.png" alt="Casse-noisette soldat low-poly blanc, 1,20 m, imprimé en 3D" width="600" height="640" />
+          <canvas id="hero-canvas" aria-label="Illustration 3D interactive : casse-noisette soldat low-poly blanc de 1,20 m qui s’assemble au défilement" role="img" hidden></canvas>
+          <span class="stage-tag">PIÈCE 03 / 08 · ASSEMBLAGE À TENONS</span>
+          <span class="stage-height">Hauteur 1,20 m</span>
+          <span class="stage-note">Illustration 3D interactive · la sculpture s’assemble au défilement</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Chiffres clés">
+      <div class="wrap stats-in">
+        <div><p class="stat">1,20 m</p><p>Casse-noisette en cours de fabrication</p></div>
+        <div><p class="stat">XXL</p><p>Pièces assemblées par éléments</p></div>
+        <div><p class="stat">1 → série</p><p>Pièce unique ou petite série</p></div>
+        <div><p class="stat">0 moule</p><p>Fabrication directe depuis le fichier 3D</p></div>
+      </div>
+    </section>
+
+    <section class="flagship" id="projet">
+      <div class="wrap flagship-in">
+        <figure class="viewer" id="viewer">
+          <img id="viewer-fallback" src="/images/hero-illustration.png" alt="Casse-noisette soldat low-poly blanc, 1,20 m, imprimé en 3D" width="600" height="720" />
+          <canvas id="viewer-canvas" aria-label="Visionneuse 3D interactive du casse-noisette de 1,20 m" role="img" hidden></canvas>
+          <span class="badge">FABRICATION EN COURS</span>
+          <figcaption>Illustration 3D · photos de la fabrication à intégrer</figcaption>
+        </figure>
+        <div>
+          <p class="label">Projet phare</p>
+          <h2>Un casse-noisette de 1,20 m, imprimé pièce par pièce.</h2>
+          <p class="body">Notre premier projet monumental est en cours d’impression dans l’atelier. Chaque élément est découpé pour tenir sur nos plateaux, puis assemblé par tenons invisibles. Un exemple concret de ce que nous fabriquons pour vous.</p>
+          <dl class="specs">
+            <div><dt>Hauteur</dt><dd>1,20 m</dd></div>
+            <div><dt>Construction</dt><dd>Éléments assemblés</dd></div>
+            <div><dt>Finition</dt><dd>Monochrome, prêt à peindre</dd></div>
+            <div><dt>Statut</dt><dd>Impression en cours</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section class="works" id="realisations">
+      <div class="wrap">
+        <p class="label">Réalisations de l’atelier</p>
+        <h2>Des pièces finies, pensées pour être vues.</h2>
+        <ul class="cards">
+          <li><img src="/images/lampe-vague-1.jpg" alt="Lampe Vague, lampe design à LED, photo de la pièce produite" width="282" height="352" loading="lazy" /><h3>Lampe Vague</h3><p>Lampe design · lumière LED</p></li>
+          <li><img src="/images/etagere-hexagonale-1.jpg" alt="Étagères hexagonales murales, photo de la pièce produite" width="282" height="352" loading="lazy" /><h3>Étagères hexagonales</h3><p>Mobilier mural modulaire</p></li>
+          <li><img src="/images/citrouille-36-3.jpg" alt="Citrouille lumineuse de 36 cm, photo de la pièce produite" width="282" height="352" loading="lazy" /><h3>Citrouille lumineuse</h3><p>Décor saisonnier 36 cm</p></li>
+          <li><img src="/images/masque-crane-1.jpg" alt="Masque crâne sculpté, photo de la pièce produite" width="282" height="352" loading="lazy" /><h3>Masque crâne</h3><p>Pièce décorative sculptée</p></li>
+        </ul>
+        <p class="note">Photos réelles de pièces produites à l’atelier.</p>
+      </div>
+    </section>
+
+    <section class="services" id="prestations">
+      <div class="wrap">
+        <p class="label">Prestations</p>
+        <h2>Du fichier à la pièce monumentale.</h2>
+        <ol class="svc">
+          <li><span>01</span><h3>Conception et adaptation de modèles 3D</h3><p>Nous préparons ou adaptons votre modèle pour la fabrication grand format.</p></li>
+          <li><span>02</span><h3>Sculptures et figurines grand format</h3><p>Pièces monumentales découpées et assemblées sans colle hasardeuse.</p></li>
+          <li><span>03</span><h3>Mascottes et personnages</h3><p>Personnages de marque, festifs ou décoratifs, à l’échelle voulue.</p></li>
+          <li><span>04</span><h3>Objets surdimensionnés</h3><p>Reproduction d’objets à une échelle spectaculaire.</p></li>
+          <li><span>05</span><h3>Prototypes et pièces spécifiques</h3><p>Éléments non standard à intégrer dans vos décors.</p></li>
+          <li><span>06</span><h3>Petites et moyennes séries</h3><p>Pièce unique ou série personnalisée, sans moule.</p></li>
+          <li><span>07</span><h3>Production en marque blanche</h3><p>Pour les scénographes et fabricants de décors.</p></li>
+          <li><span>08</span><h3>Peinture et finition en option</h3><p>Finition polychrome réalisée par un partenaire spécialisé.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="options" id="options">
+      <div class="wrap">
+        <p class="label">En option</p>
+        <h2>Des pièces qui vont plus loin.</h2>
+        <ul class="opts">
+          <li><h3>QR codes imprimés en 3D</h3><p>Un QR code intégré dans la matière, pour relier la pièce à votre site ou à une offre.</p></li>
+          <li><h3>Puces NFC intégrées</h3><p>Une puce noyée dans l’impression : un geste du téléphone ouvre votre contenu.</p></li>
+          <li><h3>Éclairage intégré</h3><p>LED logées dans la pièce pour la mettre en valeur, de jour comme de nuit.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="partner" id="sous-traitance">
+      <div class="wrap">
+        <div class="partner-head">
+          <div><p class="label">Partenaire de production</p><h2>Votre renfort de fabrication, discret et fiable.</h2></div>
+          <p class="body">Nous produisons en marque blanche pour les agences de scénographie, les fabricants de décors et les organisateurs d’événements. Production monochrome, prête à intégrer ou à peindre par vos équipes ; finition peinte sur demande via un partenaire.</p>
+        </div>
+        <ol class="steps">
+          <li><span>01</span><h3>Brief et fichiers</h3><p>Vos dimensions, quantités, échéance et modèle 3D ou références.</p></li>
+          <li><span>02</span><h3>Étude et découpe</h3><p>Découpage en éléments imprimables et assemblables.</p></li>
+          <li><span>03</span><h3>Fabrication</h3><p>Impression monochrome dans la teinte choisie.</p></li>
+          <li><span>04</span><h3>Livraison</h3><p>Pièces prêtes à assembler, intégrer ou peindre.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="quote" id="devis">
+      <div class="wrap quote-in">
+        <div>
+          <p class="label">Devis professionnel</p>
+          <h2>Parlons de votre projet.</h2>
+          <p class="body">Décrivez votre pièce : nous revenons vers vous par e-mail et convenons d’un échange téléphonique pour l’étudier.</p>
+          <a class="mail" href="mailto:melix.elec@gmail.com">melix.elec@gmail.com</a>
+        </div>
+        <form id="quote-form" class="form" novalidate>
+          <label>Entreprise<input name="entreprise" autocomplete="organization" placeholder="Nom de la société" /></label>
+          <label>Contact<input name="contact" autocomplete="name" placeholder="Nom, e-mail, téléphone" /></label>
+          <label>Type de pièce<input name="type" placeholder="Sculpture, mascotte, décor…" /></label>
+          <label>Dimensions approximatives<input name="dimensions" placeholder="Ex. 1,5 m de haut" /></label>
+          <label>Quantité<input name="quantite" placeholder="Pièce unique, série…" /></label>
+          <label>Modèle 3D
+            <select name="modele"><option value="">Choisir…</option><option>Existant</option><option>À concevoir</option></select>
+          </label>
+          <label>Couleur et finition<input name="finition" placeholder="Teinte, peinture sous-traitée" /></label>
+          <label>Utilisation
+            <select name="utilisation"><option value="">Choisir…</option><option>Intérieur</option><option>Extérieur</option><option>ERP</option></select>
+          </label>
+          <label>Date de livraison souhaitée<input name="date" placeholder="JJ/MM/AAAA" /></label>
+          <label>Adresse de livraison<input name="adresse" autocomplete="street-address" placeholder="Ville, code postal" /></label>
+          <label class="full">Fichiers ou visuels de référence<textarea name="fichiers" rows="3" placeholder="Listez vos fichiers (STL, OBJ, images) : vous les joindrez à l’e-mail qui s’ouvre."></textarea></label>
+          <div class="full"><button class="btn" type="submit">Obtenir un devis professionnel</button>
+          <p class="hint">Votre messagerie s’ouvre avec le message pré-rempli ; joignez-y vos fichiers. Aucune donnée n’est enregistrée sur ce site.</p></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot-in">
+      <p>MELIX ELEC · SASU · Pôle fabrication 3D grand format · Électricité et VMC</p>
+      <p><a href="mailto:melix.elec@gmail.com">melix.elec@gmail.com</a> · <a href="#mentions" id="mentions-link">Mentions légales</a></p>
+    </div>
+    <div class="wrap legal" id="mentions" hidden>
+      <p>MELIX ELEC, SASU. Contact : melix.elec@gmail.com. Site statique hébergé par GitHub Pages ; aucun cookie, aucun traceur, aucune donnée de formulaire enregistrée.</p>
+    </div>
+  </footer>
+</body>
+</html>
