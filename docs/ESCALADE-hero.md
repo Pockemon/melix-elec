@@ -9,3 +9,12 @@ Pourquoi le plan ne tient pas : appliquer le constat inverse l'exigence centrale
 
 Arbitrage demandé (rôle de décision) : (a) conserver la figurine Three.js du héros (issue + SPEC) et contester le constat, ou (b) rendre le canvas du héros conditionnel à casse-noisette.glb (PNG sinon) et retirer/adapter la mention « Illustration 3D interactive » ; la SPEC serait alors à amender.
 Le constat sur le cadrage (l.118) dépend de cet arbitrage. Les journaux CI n'étant pas lisibles, aucune cause de test n'est établie.
+
+## Arbitrage rendu (http) : option 1
+
+Décision applicable : reprendre l'implémentation sur la branche imposée ; l'exécutant code, teste, produit les captures desktop/mobile, commit et pousse le lot ; la preuve RUNTIME et la livraison Pages relèvent ensuite de Foreman. L'absence de la décision citée par la revue dans le dépôt n'est pas bloquante.
+
+Conséquences appliquées :
+- Le héros conserve la scène Three.js à figurine en pièces (issue #1 + docs/design/SPEC.md l.44-52) ; le constat de revue inverse (canvas conditionné au GLB) est écarté.
+- Le repli image (hero-illustration.png sans WebGL ; image de repli + badge pour le casse-noisette) reste en vigueur tant que public/models/casse-noisette.glb est absent.
+- Reste ouvert (constat de revue sur le rendu) : la figurine occupe ≈ 40 % de la hauteur de la carte car le cadrage (src/hero3d.ts, fit()) est calculé sur la boîte de la vue éclatée. Piste dans le périmètre de la SPEC : cadrer sur la figurine assemblée et agrandir progressivement. Non traité ici, aucun test ni rendu n'étant disponible sur ce poste.
