@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { OBJETS, modelUrl } from './config';
-import { OBJET_HEIGHT, type Objet, loadGlb } from './objet';
+import { OBJET_HEIGHT, type Objet, fitObjet, loadGlb } from './objet';
 import { buildProcedural } from './procedural';
 
 export interface Frame {
@@ -43,8 +43,7 @@ export function createScene(canvas: HTMLCanvasElement): SceneHandle {
 
   const place = (obj: Objet) => {
     obj.group.visible = false;
-    obj.group.scale.multiplyScalar(SCALE);
-    obj.group.userData.base = obj.group.scale.x;
+    obj.group.userData.base = fitObjet(obj, SCALE);
     scene.add(obj.group);
     return obj;
   };
@@ -81,13 +80,14 @@ export function createScene(canvas: HTMLCanvasElement): SceneHandle {
       const next = objets[f.i + 1];
       // à droite du texte sur desktop, centré au-dessus du texte sur mobile
       const baseX = f.mobile ? 0 : 1.1;
-      const baseY = f.mobile ? 0.9 : -0.1;
-      o.group.rotation.set(Math.sin(f.progress * Math.PI * 2) * 0.18, f.progress * Math.PI * 4 + f.i * 0.6, 0);
+      const baseY = f.mobile ? 0.9 : 0.3;
+      const spin = (x: Objet, a: number, tilt: number) => x.group.rotation.set(x.spin.x > 0.5 ? a : tilt, x.spin.x > 0.5 ? 0 : a, 0);
+      spin(o, f.progress * Math.PI * 4 + f.i * 0.6, Math.sin(f.progress * Math.PI * 2) * 0.18);
       o.explode(f.explode);
       o.group.position.set(baseX - f.slide * 12, baseY, 0);
       if (next && f.slide > 0) {
         next.explode(0);
-        next.group.rotation.set(0, f.progress * Math.PI * 4, 0);
+        spin(next, f.progress * Math.PI * 4, 0);
         next.group.position.set(baseX + (1 - f.slide) * 12, baseY, 0);
       }
       renderer.render(scene, camera);

@@ -55,7 +55,7 @@ function nutcracker(cfg: Cfg): Objet {
   ];
   let y = -1.6;
   const parts: Part[] = slices.map((s, i) => {
-    const part = { mesh: new THREE.Mesh(new THREE.CylinderGeometry(s.r1, s.r2, s.h, 7), s.mat), home: V(0, y + s.h / 2, 0), dir: V((i % 2 ? 1 : -1) * 0.25, (i - 2) * 0.55, 0.15) };
+    const part = { mesh: new THREE.Mesh(new THREE.CylinderGeometry(s.r1, s.r2, s.h, 7), s.mat), home: V(0, y + s.h / 2, 0), dir: V(0, i - 2, 0), mag: (Math.abs(i - 2) / 2) * 0.6 };
     y += s.h;
     return part;
   });

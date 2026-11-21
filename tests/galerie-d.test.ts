@@ -1,5 +1,8 @@
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import * as THREE from 'three';
+import { OBJET_HEIGHT, SCREEN_LIMIT, fitObjet, screenExtent } from '../src/scene/objet';
+import { buildProcedural } from '../src/scene/procedural';
 import { EXPLODE_SPAN, SLIDE_START, clamp, damp, explode, renderMode, segment, slide, smoothstep, stepped } from '../src/scroll-core';
 import { OBJETS, modelUrl } from '../src/scene/config';
 import { GAL_TAGLINE, evaluateGalerie, formatGalerie, parseGalerie } from '../scripts/prove-lib.mjs';
@@ -101,5 +104,24 @@ describe('prove-mx-gal-01', () => {
     expect(evaluateGalerie({ ...ok, runtime: {} }).verdict).toBe('NOT_PROVEN');
     expect(evaluateGalerie({ ...ok, runtime: { ...ok.runtime, liste: { ...ok.runtime.liste, mode: '3d', gl: true } } }).verdict).toBe('NOT_PROVEN');
     expect(evaluateGalerie({ ...ok, health: null, page: null }).verdict).toBe('NOT_PROVEN');
+  });
+});
+
+describe('éclatement borné : boîte englobante en unités de scène', () => {
+  const cfg = (id: string) => OBJETS.find((o) => o.id === id)!.explode;
+  for (const o of OBJETS) {
+    it(`${o.id} : l'objet éclaté reste dans la zone centrale droite`, () => {
+      const obj = buildProcedural(o.id, { distance: cfg(o.id).distance * OBJET_HEIGHT, twist: cfg(o.id).twist });
+      fitObjet(obj, 0.78);
+      const { w, h } = screenExtent(obj);
+      expect(w).toBeLessThanOrEqual(SCREEN_LIMIT.w + 1e-6);
+      expect(h).toBeLessThanOrEqual(SCREEN_LIMIT.h + 1e-6);
+    });
+  }
+  it("casse-noisette : amplitude verticale totale ≤ 1,6 × hauteur assemblée", () => {
+    const obj = buildProcedural('casse-noisette', { distance: cfg('casse-noisette').distance * OBJET_HEIGHT, twist: 0 });
+    const box = new THREE.Box3();
+    const height = (t: number) => { obj.explode(t); obj.group.updateMatrixWorld(true); return box.setFromObject(obj.group).getSize(new THREE.Vector3()).y; };
+    expect(height(1)).toBeLessThanOrEqual(1.6 * height(0));
   });
 });
