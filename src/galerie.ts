@@ -8,13 +8,10 @@ import {
   DoubleSide,
   ExtrudeGeometry,
   Group,
-  HemisphereLight,
   Mesh,
   MeshBasicMaterial,
-  MeshStandardMaterial,
   PerspectiveCamera,
   PlaneGeometry,
-  PointLight,
   RingGeometry,
   Scene,
   Shape,
@@ -132,6 +129,7 @@ export function initGalerie(): void {
     return;
   }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.outputColorSpace = SRGBColorSpace;
   renderer.setClearColor(new Color(OS));
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -147,13 +145,8 @@ export function initGalerie(): void {
   scene.background = new Color(OS);
   const camera = new PerspectiveCamera(48, 1, 0.1, 40);
 
-  // Lumière : ciel clair, rebond pierre, une source fixe au plafond (le halo ne suit jamais la caméra).
-  scene.add(new HemisphereLight(0xffffff, new Color(PIERRE), 0.95));
-  const lustre = new PointLight(0xfff1dc, 14, 0, 2);
-  lustre.position.set(0, H - 0.5, 0);
-  scene.add(lustre);
-
-  const mat = (color: string, side = 0 as 0 | 2) => new MeshStandardMaterial({ color, roughness: 1, metalness: 0, side });
+  // Matériaux sans éclairage physique : les teintes os / blanc cassé / pierre restent celles de la palette.
+  const mat = (color: string, side = 0 as 0 | 2) => new MeshBasicMaterial({ color, side });
 
   const floor = new Mesh(new CircleGeometry(R, 72), mat(PIERRE));
   floor.rotation.x = -Math.PI / 2;
@@ -169,7 +162,7 @@ export function initGalerie(): void {
   const skirting = new Mesh(new CylinderGeometry(R - 0.01, R - 0.01, 0.14, 96, 1, true), mat(GRAPHITE, DoubleSide));
   skirting.position.y = 0.07;
   scene.add(skirting);
-  const ceiling = new Mesh(new CircleGeometry(R, 72), mat('#ECE7DC'));
+  const ceiling = new Mesh(new CircleGeometry(R, 72), mat('#F3EFE7'));
   ceiling.rotation.x = Math.PI / 2;
   ceiling.position.y = H;
   scene.add(ceiling);
@@ -186,7 +179,7 @@ export function initGalerie(): void {
   const outer = archShape(NICHE_W + 0.5, NICHE_STRAIGHT + 0.25);
   outer.holes.push(archShape(NICHE_W, NICHE_STRAIGHT));
   const molding = new ExtrudeGeometry(outer, { depth: 0.3, bevelEnabled: false });
-  const backMat = mat('#DDD7CB');
+  const backMat = mat('#E6E1D8');
   const moldMat = mat('#F6F2EA');
   const frameMat = mat('#FFFFFF');
   const filetMat = new MeshBasicMaterial({ color: CUIVRE });
@@ -281,6 +274,7 @@ export function initGalerie(): void {
     let lastX: number | null = null;
     canvas.addEventListener('pointerdown', (e) => {
       lastX = e.clientX;
+      pressed = true;
       canvas.setPointerCapture(e.pointerId);
     });
     canvas.addEventListener('pointermove', (e) => {
@@ -292,10 +286,29 @@ export function initGalerie(): void {
     });
     const end = () => {
       lastX = null;
+      pressed = false;
+      scheduleSnap();
     };
     canvas.addEventListener('pointerup', end);
     canvas.addEventListener('pointercancel', end);
   }
+
+  // Au repos, la caméra se cale sur la niche la plus proche (cadre et cartel entiers).
+  let snapTimer = 0;
+  let pressed = false;
+  const snap = () => {
+    if (reduced || pressed) return;
+    const { top, r, total } = metrics();
+    const p = (top - r.top) / total;
+    if (p <= 0 || p >= 1) return;
+    const i = clamp(Math.round(p * (count - 1)), 0, count - 1);
+    const dy = (indexToProgress(i, count) - p) * total;
+    if (Math.abs(dy) > 2) window.scrollBy({ top: dy, behavior: 'smooth' });
+  };
+  const scheduleSnap = () => {
+    window.clearTimeout(snapTimer);
+    snapTimer = window.setTimeout(snap, 140);
+  };
 
   let label = -1;
   const updateLabel = (i: number) => {
@@ -340,7 +353,14 @@ export function initGalerie(): void {
     invalidate();
   };
   new ResizeObserver(resize).observe(canvas);
-  if (!reduced) window.addEventListener('scroll', invalidate, { passive: true });
+  if (!reduced) window.addEventListener(
+      'scroll',
+      () => {
+        invalidate();
+        scheduleSnap();
+      },
+      { passive: true },
+    );
   canvas.addEventListener('webglcontextlost', (e) => {
     e.preventDefault();
     section.classList.remove('galerie--gl', 'galerie--statique');
