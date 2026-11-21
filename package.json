@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "test": "vitest run",
-    "prove-mx-site-01": "node scripts/prove-mx-site-01.mjs"
+    "prove-mx-site-01": "node scripts/prove-mx-site-01.mjs",
+    "prove-mx-devis-01": "node scripts/prove-mx-devis-01.mjs"
   },
   "dependencies": {
     "@fontsource-variable/dm-sans": "^5.3.0",
@@ -25,6 +26,7 @@
     "vitest": "^5.1.0"
   },
   "bin": {
-    "prove-mx-site-01": "scripts/prove-mx-site-01.mjs"
+    "prove-mx-site-01": "scripts/prove-mx-site-01.mjs",
+    "prove-mx-devis-01": "scripts/prove-mx-devis-01.mjs"
   }
 }
