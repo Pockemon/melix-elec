@@ -28,7 +28,7 @@ async function crawl(path) {
   const r = await get(url);
   if (!r || r.status !== 200) return;
   scripts.push(r.body);
-  for (const m of r.body.matchAll(/["'`](.{0,2}/?[w./-]*[w.-]+.js)["'`]/g)) {
+  for (const m of r.body.matchAll(/["'`]([\w./-]*[\w-]+\.js)["'`]/g)) {
     const next = new URL(m[1], url).href;
     if (next.startsWith(`${base}/`)) await crawl(next);
   }
