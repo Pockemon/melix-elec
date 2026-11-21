@@ -3,185 +3,130 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MELIX ELEC — Fabrication 3D grand format</title>
-  <meta name="description" content="Pôle fabrication additive en Savoie : pièces uniques, conçues et fabriquées sur mesure, pour les professionnels." />
-  <meta name="theme-color" content="#F3EFE7" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231E1F1D'/%3E%3C/svg%3E" />
-  <link rel="preload" as="font" type="font/woff2" href="/fonts/cormorant-garamond-normal-latin.woff2" crossorigin />
-  <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-normal-latin.woff2" crossorigin />
-  <link rel="stylesheet" href="/fonts/fonts.css" />
+  <title>MELIX ELEC — Impression 3D GRAND FORMAT</title>
+  <meta name="description" content="Atelier en Savoie : impression 3D grand format, pièces uniques, petites séries colorées et sous-traitance pour les professionnels." />
+  <meta name="theme-color" content="#1B1C20" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231B1C20'/%3E%3Crect x='10' y='10' width='12' height='12' fill='%23C9A24B' transform='rotate(45 16 16)'/%3E%3C/svg%3E" />
+  <link rel="preload" href="/fonts/bebas-neue-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/fonts/fonts.css" />
   <script type="module" src="/src/main.ts"></script>
 </head>
 <body>
-  <a class="skip" href="#contenu">Aller au contenu</a>
-  <header class="nav">
-    <div class="wrap nav-in">
-      <a class="brand" href="#" aria-label="MELIX ELEC, accueil">
-        <span class="logo" aria-hidden="true"></span>
-        <span><strong>MELIX ELEC</strong></span>
-      </a>
-      <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
-      <nav aria-label="Navigation principale" class="links" id="menu">
-        <a href="#realisations">Galerie</a>
-        <a href="#prestations">Prestations</a>
-        <a href="#sous-traitance">Sous-traitance</a>
-        <a href="#devis">Devis</a>
-        <a class="btn menu-cta" href="#devis">Obtenir un devis professionnel</a>
-      </nav>
-      <a class="btn btn-ghost" href="#devis">Obtenir un devis professionnel</a>
-    </div>
-  </header>
+  <nav class="nav" aria-label="Navigation principale">
+    <a class="brand" href="#top" aria-label="MELIX ELEC, accueil"><i aria-hidden="true"></i>MELIX ELEC</a>
+    <ul>
+      <li><a href="#epingle">Galerie</a></li>
+      <li><a href="#">Prestations</a></li>
+      <li><a href="#">Sous-traitance</a></li>
+      <li><a href="#devis">Devis</a></li>
+    </ul>
+    <a class="cta" href="#devis">Devis pro</a>
+  </nav>
+  <div class="idx" aria-hidden="true"><span class="on"><i></i>01</span><span><i></i>02</span><span><i></i>03</span></div>
 
-  <main id="contenu">
-    <section class="galerie" id="realisations" data-section="galerie" aria-labelledby="galerie-titre">
-      <div class="galerie-piste" id="galerie-piste">
-        <div class="galerie-scene" id="galerie-scene">
-          <canvas id="galerie-canvas" role="img" aria-label="Galerie 3D : salle circulaire à niches en arche, une photo encadrée par niche" hidden></canvas>
-          <div class="galerie-ui" id="galerie-ui" hidden>
-            <button class="g-btn" type="button" data-galerie-prev aria-label="Œuvre précédente">←</button>
-            <p class="g-compteur" id="galerie-compteur" aria-live="polite"></p>
-            <button class="g-btn" type="button" data-galerie-next aria-label="Œuvre suivante">→</button>
+  <main>
+    <!-- 1. chapitre plein écran : photo réelle de l'atelier (A), graphisme B -->
+    <section class="chap" id="top">
+      <img class="bg" src="/images/hero-atelier-ia-1440.jpg" srcset="/images/hero-atelier-ia-780.jpg 780w, /images/hero-atelier-ia-1440.jpg 1440w" sizes="100vw" width="1440" height="814" alt="Machine d'impression 3D grand format en atelier" fetchpriority="high" decoding="async" />
+      <div class="num bebas" aria-hidden="true">01</div>
+      <div class="k">
+        <div class="mono">Atelier · Savoie — fabrication 3D</div>
+        <h1 class="bebas">GRAND<br><em>FORMAT</em></h1>
+        <p>Pièces jusqu'à 60 cm d'une seule traite, petites séries colorées, sous-traitance pour les pros. Tout est imprimé ici, puis fini à la main.</p>
+        <div class="chips"><span class="chip">Pièces uniques</span><span class="chip o">Petites séries</span><span class="chip o">Sous-traitance</span></div>
+      </div>
+      <div class="meta"><span class="mono">En cours d'impression</span><b>CASSE-NOISETTE</b>PLA · 41 h · 2026</div>
+      <div class="scrollhint">Faites défiler<i></i></div>
+    </section>
+
+    <!-- 2. section épinglée : le défilement vertical devient horizontal ; la pièce 3D tourne et se décompose -->
+    <section id="pin" data-section="galerie" aria-label="Pièces fabriquées à l'atelier">
+      <div id="stage">
+        <canvas id="gl" aria-hidden="true"></canvas>
+        <ol id="track">
+        <li class="panel" data-oeuvre>
+          <div class="ghost bebas" aria-hidden="true">01</div>
+          <img class="photo" src="/images/etagere-hexagonale-1-hd-800.jpg" width="800" height="450" alt="Pièce réelle : étagères hexagonales" loading="lazy" decoding="async" />
+          <div class="k">
+            <div class="mono">01 / 03 — Série</div>
+            <h2 class="bebas">ÉTAGÈRES<br><em>HEXAGONALES</em></h2>
+            <p>Trois alvéoles, trois teintes, une fixation invisible. Chaque module sort d'une seule pièce.</p>
+            <dl class="steps"><dt>Matière</dt><dd>PLA mat</dd><dt>Largeur</dt><dd>32 cm par module</dd><dt>Série</dt><dd>3 à 30 pièces</dd></dl>
+            <p class="cartel"><span data-cartel-titre>Étagères hexagonales</span>, <span data-cartel-matiere>PLA mat</span>, <span data-cartel-annee>2026</span></p>
           </div>
-        </div>
-        <div class="galerie-liste-bloc">
-          <p class="label">Réalisations de l’atelier</p>
-          <h2 id="galerie-titre">Des pièces finies, pensées pour être vues.</h2>
-          <ol class="galerie-liste" id="galerie-liste">
-            <li data-oeuvre>
-              <img src="/images/casse-noisette-atelier.jpg" alt="Casse-noisette monumental en cours d’impression dans l’atelier, photo réelle" width="720" height="1280" loading="lazy" />
-              <p class="cartel"><strong data-cartel-titre>Casse-noisette en atelier</strong><span data-cartel-matiere>Impression 3D, PLA</span><span data-cartel-annee>2026</span></p>
-            </li>
-            <li data-oeuvre>
-              <img src="/images/lampe-vague-1.jpg" alt="Lampe Vague, lampe design à LED, photo de la pièce produite" width="1080" height="1350" loading="lazy" />
-              <p class="cartel"><strong data-cartel-titre>Lampe Vague</strong><span data-cartel-matiere>Impression 3D, PLA</span><span data-cartel-annee>2026</span></p>
-            </li>
-            <li data-oeuvre>
-              <img src="/images/etagere-hexagonale-1.jpg" alt="Étagères hexagonales murales, photo de la pièce produite" width="1600" height="900" loading="lazy" />
-              <p class="cartel"><strong data-cartel-titre>Étagères hexagonales</strong><span data-cartel-matiere>Impression 3D, PLA</span><span data-cartel-annee>2026</span></p>
-            </li>
-            <li data-oeuvre>
-              <img src="/images/imprimante-atelier.jpg" alt="Imprimante 3D de l’atelier en fonctionnement, photo réelle" width="720" height="900" loading="lazy" />
-              <p class="cartel"><strong data-cartel-titre>Imprimante de l’atelier</strong><span data-cartel-matiere>Impression 3D, PLA</span><span data-cartel-annee>2026</span></p>
-            </li>
-          </ol>
-          <p class="note">Photos réelles de pièces produites à l’atelier.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="intro" id="top">
-      <div class="wrap intro-in">
-        <p class="label">Atelier de fabrication additive · Savoie</p>
-        <h1>Des pièces uniques, conçues et fabriquées sur mesure.</h1>
-        <p class="lead">Sculptures, luminaires et mobilier, à l’unité ou en petite série, pour les professionnels de l’événementiel, de la décoration et de la communication.</p>
-        <div class="cta">
-          <a class="btn" href="#devis">Demander une fabrication sur mesure</a>
-          <a class="btn btn-ghost" href="#sous-traitance">Devenir partenaire de production</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="flagship" id="projet">
-      <div class="wrap flagship-in">
-        <div>
-          <p class="label">Projet phare</p>
-          <h2>Un casse-noisette de 1,20 m, imprimé pièce par pièce.</h2>
-        </div>
-        <div>
-          <p class="body">Notre premier projet monumental est en cours d’impression dans l’atelier. Chaque élément est découpé pour tenir sur nos plateaux, puis assemblé par tenons invisibles. Un exemple concret de ce que nous fabriquons pour vous.</p>
-          <dl class="specs">
-            <div><dt>Hauteur</dt><dd>1,20 m</dd></div>
-            <div><dt>Construction</dt><dd>Éléments assemblés</dd></div>
-            <div><dt>Finition</dt><dd>Monochrome, prêt à peindre</dd></div>
-            <div><dt>Statut</dt><dd>Impression en cours</dd></div>
-          </dl>
-        </div>
-      </div>
-    </section>
-
-    <section class="services" id="prestations">
-      <div class="wrap">
-        <p class="label">Prestations</p>
-        <h2>Du fichier à la pièce monumentale.</h2>
-        <ol class="svc">
-          <li><span>01</span><h3>Conception et adaptation de modèles 3D</h3><p>Nous préparons ou adaptons votre modèle pour la fabrication grand format.</p></li>
-          <li><span>02</span><h3>Sculptures et figurines grand format</h3><p>Pièces monumentales découpées et assemblées sans colle hasardeuse.</p></li>
-          <li><span>03</span><h3>Mascottes et personnages</h3><p>Personnages de marque, festifs ou décoratifs, à l’échelle voulue.</p></li>
-          <li><span>04</span><h3>Objets surdimensionnés</h3><p>Reproduction d’objets à une échelle spectaculaire.</p></li>
-          <li><span>05</span><h3>Prototypes et pièces spécifiques</h3><p>Éléments non standard à intégrer dans vos décors.</p></li>
-          <li><span>06</span><h3>Petites et moyennes séries</h3><p>Pièce unique ou série personnalisée, sans moule.</p></li>
-          <li><span>07</span><h3>Production en marque blanche</h3><p>Pour les scénographes et fabricants de décors.</p></li>
-          <li><span>08</span><h3>Peinture et finition en option</h3><p>Finition polychrome réalisée par un partenaire spécialisé.</p></li>
+          <div class="meta"><span class="mono">Décomposition</span><b>3 MODULES</b>impression en parallèle</div>
+        </li>
+        <li class="panel" data-oeuvre>
+          <div class="ghost bebas" aria-hidden="true">02</div>
+          <img class="photo" src="/images/lampe-vague-1-hd-800.jpg" width="800" height="1000" alt="Pièce réelle : lampe Vague" loading="lazy" decoding="async" />
+          <div class="k">
+            <div class="mono">02 / 03 — Pièce</div>
+            <h2 class="bebas">LAMPE<br><em>VAGUE</em></h2>
+            <p>Anneau noir mat, diffuseur blanc en vingt strates ondulées. Lumière chaude ou colorée, selon la pièce.</p>
+            <dl class="steps"><dt>Matière</dt><dd>PETG · PLA</dd><dt>Hauteur</dt><dd>20 cm</dd><dt>Strates</dt><dd>20 strates emboîtées</dd></dl>
+            <p class="cartel"><span data-cartel-titre>Lampe Vague</span>, <span data-cartel-matiere>PETG · PLA</span>, <span data-cartel-annee>2026</span></p>
+          </div>
+          <div class="meta"><span class="mono">Décomposition</span><b>21 PARTS</b>anneau + 20 strates</div>
+        </li>
+        <li class="panel" data-oeuvre>
+          <div class="ghost bebas" aria-hidden="true">03</div>
+          <img class="photo" src="/images/casse-noisette-atelier-hd-800.jpg" width="800" height="1422" alt="Sur le plateau : casse-noisette" loading="lazy" decoding="async" />
+          <div class="k">
+            <div class="mono">03 / 03 — Grand format</div>
+            <h2 class="bebas">CASSE-<br><em>NOISETTE</em></h2>
+            <p>1,20 m de haut, découpée par GPS en 24 pièces, imprimées en tranches puis assemblées à l'atelier.</p>
+            <dl class="steps"><dt>Matière</dt><dd>PLA</dd><dt>Hauteur</dt><dd>120 cm</dd><dt>Impression</dt><dd>41 h · 6 tranches</dd></dl>
+            <p class="cartel"><span data-cartel-titre>Casse-noisette</span>, <span data-cartel-matiere>PLA</span>, <span data-cartel-annee>2026</span></p>
+          </div>
+          <div class="meta"><span class="mono">Décomposition</span><b>6 TRANCHES · 24 PIÈCES</b>découpe GPS · tenons · assemblage</div>
+        </li>
         </ol>
+        <div id="hud" aria-hidden="true"><div id="hud-progress"></div><span>Défilez pour décomposer</span></div>
       </div>
     </section>
 
-    <section class="options" id="options">
-      <div class="wrap">
-        <p class="label">En option</p>
-        <h2>Des pièces qui vont plus loin.</h2>
-        <ul class="opts">
-          <li><h3>QR codes imprimés en 3D</h3><p>Un QR code intégré dans la matière, pour relier la pièce à votre site ou à une offre.</p></li>
-          <li><h3>Puces NFC intégrées</h3><p>Une puce noyée dans l’impression : un geste du téléphone ouvre votre contenu.</p></li>
-          <li><h3>Éclairage intégré</h3><p>LED logées dans la pièce pour la mettre en valeur, de jour comme de nuit.</p></li>
-        </ul>
-      </div>
+    <div class="band" aria-hidden="true"><div><span>IMPRESSION 3D GRAND FORMAT</span><span>✦</span><span>PLA · PETG · TPU</span><span>✦</span><span>PIÈCES JUSQU'À 60 CM</span><span>✦</span><span>DEVIS SOUS 48 H</span><span>✦</span><span>IMPRESSION 3D GRAND FORMAT</span><span>✦</span><span>PLA · PETG · TPU</span><span>✦</span><span>PIÈCES JUSQU'À 60 CM</span><span>✦</span><span>DEVIS SOUS 48 H</span><span>✦</span></div></div>
+
+    <section class="grid" id="grille">
+      <div class="head"><h2 class="bebas">TOUTES LES<br><em>PIÈCES</em></h2><div class="filters"><span class="chip">Toutes</span><span class="chip o">Objets</span><span class="chip o">Séries</span><span class="chip o">Atelier</span></div></div>
+      <ul class="cards">
+        <li class="card" data-oeuvre="01"><img class="im" src="/images/casse-noisette-atelier-hd-800.jpg" width="800" height="1422" alt="Casse-noisette sur le plateau" loading="lazy" decoding="async" /><span class="chip tag">120 cm</span><div class="n"><span>Casse-noisette</span><span>01</span></div><div class="s">Impression 3D, PLA · 2026</div></li>
+        <li class="card" data-oeuvre="02"><img class="im" src="/images/lampe-vague-1-hd-800.jpg" width="800" height="1000" alt="Lampe Vague" loading="lazy" decoding="async" /><div class="n"><span>Lampe Vague</span><span>02</span></div><div class="s">PETG · PLA · 2026</div></li>
+        <li class="card" data-oeuvre="03"><img class="im" src="/images/etagere-hexagonale-1-hd-800.jpg" width="800" height="450" alt="Étagères hexagonales" loading="lazy" decoding="async" /><span class="chip tag">Série</span><div class="n"><span>Étagères hexagonales</span><span>03</span></div><div class="s">PLA mat · 3 teintes · 2026</div></li>
+        <li class="card" data-oeuvre="04"><img class="im" src="/images/atelier-ia-2-800.jpg" width="800" height="452" alt="Machine en atelier" loading="lazy" decoding="async" /><div class="n"><span>Machine en atelier</span><span>04</span></div><div class="s">Grand format · 2026</div></li>
+      </ul>
     </section>
 
-    <section class="partner" id="sous-traitance">
-      <div class="wrap">
-        <div class="partner-head">
-          <div><p class="label">Partenaire de production</p><h2>Votre renfort de fabrication, discret et fiable.</h2></div>
-          <p class="body">Nous produisons en marque blanche pour les agences de scénographie, les fabricants de décors et les organisateurs d’événements. Production monochrome, prête à intégrer ou à peindre par vos équipes ; finition peinte sur demande via un partenaire.</p>
-        </div>
-        <ol class="steps">
-          <li><span>01</span><h3>Brief et fichiers</h3><p>Vos dimensions, quantités, échéance et modèle 3D ou références.</p></li>
-          <li><span>02</span><h3>Étude et découpe</h3><p>Découpage en éléments imprimables et assemblables.</p></li>
-          <li><span>03</span><h3>Fabrication</h3><p>Impression monochrome dans la teinte choisie.</p></li>
-          <li><span>04</span><h3>Livraison</h3><p>Pièces prêtes à assembler, intégrer ou peindre.</p></li>
-        </ol>
-      </div>
+    <section class="cta-sec" id="devis">
+      <h2 class="bebas">ON IMPRIME<br>VOTRE PIÈCE.</h2>
+      <p>Envoyez un fichier ou une photo : vous recevez un devis chiffré sous 48 h, avec matière, délai et finition.</p>
+      <a class="cta-btn" id="devis-open" href="mailto:melix.elec@gmail.com">Obtenir un devis professionnel</a>
     </section>
 
-    <section class="quote" id="devis">
-      <div class="wrap quote-in">
-        <div>
-          <p class="label">Devis professionnel</p>
-          <h2>Parlons de votre projet.</h2>
-          <p class="body">Décrivez votre pièce : nous revenons vers vous par e-mail et convenons d’un échange téléphonique pour l’étudier.</p>
-          <a class="mail" href="mailto:melix.elec@gmail.com">melix.elec@gmail.com</a>
-        </div>
-        <form id="quote-form" class="form" novalidate>
-          <label>Entreprise<input name="entreprise" autocomplete="organization" placeholder="Nom de la société" /></label>
-          <label>Contact<input name="contact" autocomplete="name" placeholder="Nom, e-mail, téléphone" /></label>
-          <label>Type de pièce<input name="type" placeholder="Sculpture, mascotte, décor…" /></label>
-          <label>Dimensions approximatives<input name="dimensions" placeholder="Ex. 1,5 m de haut" /></label>
-          <label>Quantité<input name="quantite" placeholder="Pièce unique, série…" /></label>
-          <label>Modèle 3D
-            <select name="modele"><option value="">Choisir…</option><option>Existant</option><option>À concevoir</option></select>
-          </label>
-          <label>Couleur et finition<input name="finition" placeholder="Teinte, peinture sous-traitée" /></label>
-          <label>Utilisation
-            <select name="utilisation"><option value="">Choisir…</option><option>Intérieur</option><option>Extérieur</option><option>ERP</option></select>
-          </label>
-          <label>Date de livraison souhaitée<input name="date" placeholder="JJ/MM/AAAA" /></label>
-          <label>Adresse de livraison<input name="adresse" autocomplete="street-address" placeholder="Ville, code postal" /></label>
-          <label class="full">Fichiers ou visuels de référence<textarea name="fichiers" rows="3" placeholder="Listez vos fichiers (STL, OBJ, images) : vous les joindrez à l’e-mail qui s’ouvre."></textarea></label>
-          <div class="full"><button class="btn" type="submit">Obtenir un devis professionnel</button>
-          <p class="hint">Votre messagerie s’ouvre avec le message pré-rempli ; joignez-y vos fichiers. Aucune donnée n’est enregistrée sur ce site.</p></div>
-        </form>
-      </div>
-    </section>
+    <dialog id="quote-dialog" aria-label="Demande de devis professionnel">
+      <button class="close" id="quote-close" type="button" aria-label="Fermer">×</button>
+      <h2 class="bebas">DEVIS<br><em>PROFESSIONNEL</em></h2>
+      <form id="quote-form" class="form" novalidate>
+                <label>Entreprise<input name="entreprise" autocomplete="organization" placeholder="Nom de la société" /></label>
+                <label>Contact<input name="contact" autocomplete="name" placeholder="Nom, e-mail, téléphone" /></label>
+                <label>Type de pièce<input name="type" placeholder="Sculpture, mascotte, décor…" /></label>
+                <label>Dimensions approximatives<input name="dimensions" placeholder="Ex. 1,5 m de haut" /></label>
+                <label>Quantité<input name="quantite" placeholder="Pièce unique, série…" /></label>
+                <label>Modèle 3D
+                  <select name="modele"><option value="">Choisir…</option><option>Existant</option><option>À concevoir</option></select>
+                </label>
+                <label>Couleur et finition<input name="finition" placeholder="Teinte, peinture sous-traitée" /></label>
+                <label>Utilisation
+                  <select name="utilisation"><option value="">Choisir…</option><option>Intérieur</option><option>Extérieur</option><option>ERP</option></select>
+                </label>
+                <label>Date de livraison souhaitée<input name="date" placeholder="JJ/MM/AAAA" /></label>
+                <label>Adresse de livraison<input name="adresse" autocomplete="street-address" placeholder="Ville, code postal" /></label>
+                <label class="full">Fichiers ou visuels de référence<textarea name="fichiers" rows="3" placeholder="Listez vos fichiers (STL, OBJ, images) : vous les joindrez à l’e-mail qui s’ouvre."></textarea></label>
+                <div class="full"><button class="cta-btn" type="submit">Obtenir un devis professionnel</button>
+                <p class="hint">Votre messagerie s’ouvre avec le message pré-rempli ; joignez-y vos fichiers. Aucune donnée n’est enregistrée sur ce site.</p></div>
+              </form>
+    </dialog>
   </main>
-
-  <footer class="foot">
-    <div class="wrap foot-in">
-      <p>MELIX ELEC · SASU · Pôle fabrication 3D grand format · Électricité et VMC</p>
-      <p><a href="mailto:melix.elec@gmail.com">melix.elec@gmail.com</a> · <a href="#mentions" id="mentions-link">Mentions légales</a></p>
-    </div>
-    <div class="wrap legal" id="mentions" hidden>
-      <p>MELIX ELEC, SASU. Contact : melix.elec@gmail.com. Site statique hébergé par GitHub Pages ; aucun cookie, aucun traceur, aucune donnée de formulaire enregistrée.</p>
-    </div>
-  </footer>
+  <footer class="foot"><span>MELIX ELEC — Fabrication 3D grand format, Savoie</span><span>Devis sous 48 h</span></footer>
 </body>
 </html>
