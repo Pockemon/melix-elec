@@ -16,7 +16,8 @@ export function scriptSrc(html) {
 
 // Le bundle publié construit bien le lien mailto (adresse, objet, corps encodés).
 export function bundleBuildsMailto(js) {
-  return js.includes('mailto:melix.elec@gmail.com?subject=') && js.includes('&body=') && js.includes('encodeURIComponent') && js.includes('Demande de devis professionnel');
+  // Le bundle minifié garde l'adresse dans une variable (`mailto:${e}?subject=`) : chaque élément est vérifié séparément.
+  return ['mailto:', 'melix.elec@gmail.com', '?subject=', '&body=', 'encodeURIComponent', 'Demande de devis professionnel'].every((s) => js.includes(s));
 }
 
 export function evaluateDevis({ health, expectedSha, page, bundle }) {

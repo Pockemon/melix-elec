@@ -4,7 +4,9 @@ import { FIELD_NAMES, bundleBuildsMailto, evaluateDevis, formatDevis, missingFie
 
 const html = readFileSync('index.html', 'utf8');
 const js = 'x="mailto:melix.elec@gmail.com?subject="+encodeURIComponent("Demande de devis professionnel")+"&body="';
-const health = (sha: string) => ({ status: 200, body: JSON.stringify({ status: 'ok', sha }) });
+// Forme minifiée réelle du bundle Vite : l'adresse est une variable dans le gabarit.
+const minified = 'const t="melix.elec@gmail.com";function f(e,r,n){return`mailto:${e}?subject=${encodeURIComponent(r)}&body=${encodeURIComponent(n)}`}f(t,"Demande de devis professionnel","")';
+const health =(sha: string) => ({ status: 200, body: JSON.stringify({ status: 'ok', sha }) });
 const page = { status: 200, body: html };
 
 describe('prove-mx-devis-01', () => {
@@ -18,6 +20,11 @@ describe('prove-mx-devis-01', () => {
   it('SATISFIED quand tout concorde', () => {
     const r = evaluateDevis({ expectedSha: 'a', health: health('a'), page, bundle: { status: 200, body: js } });
     expect(formatDevis(r)).toMatch(/^capability=MX-DEVIS-01 verdict=SATISFIED proof_nature=runtime-observation/);
+  });
+  it('accepte la forme minifiée du bundle Vite', () => {
+    expect(bundleBuildsMailto(minified)).toBe(true);
+    expect(bundleBuildsMailto(minified.replace('&body=', ''))).toBe(false);
+    expect(evaluateDevis({ expectedSha: 'a', health: health('a'), page, bundle: { status: 200, body: minified } }).verdict).toBe('SATISFIED');
   });
   it('NOT_PROVEN si SHA, champ ou script manquent', () => {
     expect(evaluateDevis({ expectedSha: 'a', health: health('b'), page, bundle: { status: 200, body: js } }).verdict).toBe('NOT_PROVEN');
