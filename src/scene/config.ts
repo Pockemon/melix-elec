@@ -11,7 +11,7 @@ export interface ObjetConfig {
 }
 
 export const OBJETS: readonly ObjetConfig[] = [
-  { id: 'etagere', label: 'Ã‰tagÃ¨res hexagonales', source: 'procedural', explode: { distance: 1.1, twist: 0.7 } },
+  { id: 'etagere', label: 'Ã‰tagÃ¨res hexagonales', source: 'etageres-hexagonales.glb', explode: { distance: 1.1, twist: 0.7 } },
   { id: 'lampe', label: 'Lampe Vague', source: 'lampe-vague.glb', explode: { distance: 1.1, twist: 0.7 } },
   { id: 'casse-noisette', label: 'Casse-noisette', source: 'casse-noisette.glb', explode: { distance: 1.1, twist: 0.7 } },
 ];
