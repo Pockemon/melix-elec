@@ -6,14 +6,14 @@ export interface ObjetConfig {
   id: 'etagere' | 'lampe' | 'casse-noisette';
   label: string;
   source: string;
-  /** Amplitude de l'éclatement (unités de scène) et rotation propre des parts (rad) à t = 1. */
+  /** Amplitude de l'éclatement (fraction de la hauteur de l'objet) et rotation propre des parts (rad) à t = 1. */
   explode: { distance: number; twist: number };
 }
 
 export const OBJETS: readonly ObjetConfig[] = [
-  { id: 'etagere', label: 'Étagères hexagonales', source: 'etageres-hexagonales.glb', explode: { distance: 1.1, twist: 0.7 } },
-  { id: 'lampe', label: 'Lampe Vague', source: 'lampe-vague.glb', explode: { distance: 1.1, twist: 0.7 } },
-  { id: 'casse-noisette', label: 'Casse-noisette', source: 'casse-noisette.glb', explode: { distance: 1.1, twist: 0.7 } },
+  { id: 'etagere', label: 'Étagères hexagonales', source: 'etageres-hexagonales.glb', explode: { distance: 0.45, twist: 0.3 } },
+  { id: 'lampe', label: 'Lampe Vague', source: 'lampe-vague.glb', explode: { distance: 0.45, twist: 0.3 } },
+  { id: 'casse-noisette', label: 'Casse-noisette', source: 'casse-noisette.glb', explode: { distance: 0.45, twist: 0.3 } },
 ];
 
 export const DRACO_PATH = '/draco/';

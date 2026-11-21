@@ -1,12 +1,8 @@
 import * as THREE from 'three';
 import type { ObjetConfig } from './config';
 import { type Objet, type Part, makeObjet } from './objet';
-
-const mat = (color: number, roughness: number, metalness: number) => new THREE.MeshStandardMaterial({ color, roughness, metalness, flatShading: true });
-const PLA_WHITE = mat(0xece6da, 0.62, 0.02);
-const PLA_BLACK = mat(0x1b1c20, 0.55, 0.05);
-const PLA_GOLD = mat(0xc9a24b, 0.45, 0.35);
-const PLA_BRONZE = mat(0x8a5a2b, 0.5, 0.3);
+import { palette } from './materials';
+const { white: PLA_WHITE, black: PLA_BLACK, gold: PLA_GOLD, bronze: PLA_BRONZE } = palette(true);
 const V = (x: number, y: number, z: number) => new THREE.Vector3(x, y, z);
 type Cfg = ObjetConfig['explode'];
 
@@ -48,7 +44,7 @@ function waveLamp(cfg: Cfg): Objet {
   return makeObjet(parts, cfg);
 }
 
-// 3 — Casse-noisette 60 cm : corps low-poly découpé en 5 tranches (le découpage est le sujet)
+// 3 — Casse-noisette : corps low-poly découpé en 5 tranches (le découpage est le sujet)
 function nutcracker(cfg: Cfg): Objet {
   const slices = [
     { h: 0.5, r1: 0.9, r2: 1.0, mat: PLA_BLACK },

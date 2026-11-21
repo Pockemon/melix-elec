@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { OBJETS, modelUrl } from './config';
-import { type Objet, loadGlb } from './objet';
+import { OBJET_HEIGHT, type Objet, loadGlb } from './objet';
 import { buildProcedural } from './procedural';
 
 export interface Frame {
@@ -18,6 +18,8 @@ export interface SceneHandle {
 }
 
 const SCALE = 0.78;
+// Mobile : objet borné à la moitié haute de l'écran, au-dessus du bloc texte (Figma 72:24).
+const MOBILE_SCALE = 0.6;
 
 export function createScene(canvas: HTMLCanvasElement): SceneHandle {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
@@ -42,15 +44,16 @@ export function createScene(canvas: HTMLCanvasElement): SceneHandle {
   const place = (obj: Objet) => {
     obj.group.visible = false;
     obj.group.scale.multiplyScalar(SCALE);
+    obj.group.userData.base = obj.group.scale.x;
     scene.add(obj.group);
     return obj;
   };
-  const objets: Objet[] = OBJETS.map((o) => place(buildProcedural(o.id, o.explode)));
+  const objets: Objet[] = OBJETS.map((o) => place(buildProcedural(o.id, { distance: o.explode.distance * OBJET_HEIGHT, twist: o.explode.twist })));
   // GLB réels : remplacent le repli procédural dès qu'ils sont chargés (même API explode).
   OBJETS.forEach((o, k) => {
     const url = modelUrl(o);
     if (!url) return;
-    loadGlb(url, o.explode).then(
+    loadGlb(url, o.id, o.explode).then(
       (glb) => {
         scene.remove(objets[k].group);
         objets[k] = place(glb);
@@ -73,6 +76,7 @@ export function createScene(canvas: HTMLCanvasElement): SceneHandle {
     resize,
     render(f) {
       objets.forEach((x, k) => { x.group.visible = k === f.i || (k === f.i + 1 && f.slide > 0); });
+      objets.forEach((x) => x.group.scale.setScalar(x.group.userData.base * (f.mobile ? MOBILE_SCALE : 1)));
       const o = objets[f.i];
       const next = objets[f.i + 1];
       // à droite du texte sur desktop, centré au-dessus du texte sur mobile

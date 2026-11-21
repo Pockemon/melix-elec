@@ -78,7 +78,7 @@ nav a.cta{background:var(--or);color:#121212;padding:12px 18px;font-weight:600;f
 .cta-sec p{margin:26px auto 0;max-width:520px;color:var(--muted);font-size:16px;line-height:1.5}
 .cta-btn{display:inline-block;margin-top:36px;background:var(--or);color:#121212;padding:18px 28px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;box-shadow:6px 6px 0 var(--bronze)}
 .foot{display:flex;justify-content:space-between;padding:26px 40px;border-top:1px solid var(--hair);background:var(--noir);color:var(--muted);font-size:12px}
-@media(max-width:700px){nav{padding:16px 20px}nav ul{display:none}nav .cta{padding:10px 12px;font-size:11px}.idx{display:none}
+@media(max-width:700px){nav{padding:16px 20px}nav ul{display:none}.scrollhint{display:none}nav .cta{padding:10px 12px;font-size:11px}.idx{display:none}
 .chap{min-height:640px}.chap .num{font-size:60vw;top:12vh;right:-4vw}.k{left:20px;right:20px;bottom:56px}.k h1,.k h2{font-size:58px;text-shadow:4px 4px 0 var(--bronze)}.k p{font-size:15px}.meta{display:none}
 .chap:after{background:linear-gradient(0deg,rgba(11,11,13,.88),rgba(11,11,13,.15) 55%)}
 .panel .k{top:auto;bottom:70px;transform:none}.panel .k h2{font-size:52px}.panel .k .steps{display:none}.panel .photo{display:none}.panel .ghost{left:20px;top:8vh;font-size:40vw}
