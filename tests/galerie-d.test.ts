@@ -49,9 +49,10 @@ describe('section épinglée : fonctions pures', () => {
 });
 
 describe('objets 3D : configuration unique', () => {
-  it('3 objets, repli procédural par défaut, GLB résolu dans /models/', () => {
+  it('3 objets sur GLB réels dans /models/, repli procédural possible', () => {
     expect(OBJETS.map((o) => o.id)).toEqual(['etagere', 'lampe', 'casse-noisette']);
-    expect(modelUrl(OBJETS[0])).toBeNull();
+    expect(OBJETS.map((o) => modelUrl(o))).toEqual(['/models/etageres-hexagonales.glb', '/models/lampe-vague.glb', '/models/casse-noisette.glb']);
+    expect(modelUrl({ ...OBJETS[0], source: 'procedural' })).toBeNull();
     expect(modelUrl({ ...OBJETS[0], source: 'etagere.glb' })).toBe('/models/etagere.glb');
   });
 });
