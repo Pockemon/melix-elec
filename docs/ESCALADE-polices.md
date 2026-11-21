@@ -1,12 +1,9 @@
-# Escalade : embarquement des polices Cormorant Garamond et Inter
+# Polices : Cormorant Garamond et Inter
 
-Observé :
-- La spécification impose Cormorant Garamond et Inter. Le dépôt n'embarque que Instrument Serif et DM Sans (`@fontsource/instrument-serif`, `@fontsource-variable/dm-sans`).
-- L'exécutant n'a ni réseau ni `node_modules` : impossible d'ajouter `@fontsource/cormorant-garamond` et `@fontsource-variable/inter` ni de régénérer `package-lock.json` (`npm ci` échouerait sur un lockfile inventé).
-- Charger les polices depuis Google Fonts ajouterait un service tiers au site (contraire à « aucun traceur » des mentions légales) : c'est une décision d'architecture, non prise ici.
+**Tranché : fichiers committés** (décision Cowork, commit fc67bcc). Ni fontsource, ni requête externe (Google Fonts exclu : « aucun traceur »).
 
-Mise à jour : `@fontsource/instrument-serif` et `@fontsource-variable/dm-sans` sont retirés de `package.json` et du lockfile (décision 2). Les cartels du canvas sont redessinés une fois Inter chargée (`document.fonts`). Reste bloquant : aucun fichier Cormorant Garamond / Inter n’est embarqué, faute de réseau sur le poste de l’exécutant.
-
-État livré : `src/styles.css` n'importe plus les anciennes polices et déclare la pile `'Cormorant Garamond', Georgia, serif` / `'Inter', system-ui, sans-serif`. Sans les fichiers de police, le rendu utilise Georgia et la police système : **le contrôle visuel ne peut pas être conforme sur la typographie** tant que ce point n'est pas réglé.
-
-Décision demandée (rôle de décision) : embarquer les polices via fontsource (recommandé : sur un poste avec réseau, `npm i @fontsource/cormorant-garamond @fontsource-variable/inter`, ajouter les `@import` dans `src/styles.css`, retirer les deux anciens paquets, committer le lockfile), ou autre voie.
+- `public/fonts/` : 6 fichiers woff2 variables (Cormorant Garamond normal/italique 300–400, Inter 400–500 ; sous-ensembles latin et latin-ext, licence OFL) et `fonts.css` (`@font-face`, `font-display: swap`).
+- `index.html` charge `/fonts/fonts.css` et précharge les deux fichiers latin principaux.
+- `src/styles.css` : `'Cormorant Garamond', Georgia, serif` pour titres et cartels ; `'Inter', system-ui, sans-serif` pour le texte. Les cartels du canvas sont redessinés une fois Inter chargée (`document.fonts`).
+- `package.json` ne contient aucune dépendance `@fontsource/*`.
+- `tests/galerie.test.ts` vérifie la présence des fichiers et leur référence dans `fonts.css`.

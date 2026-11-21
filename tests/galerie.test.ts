@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
   cameraAzimuth, clamp, damp, fitPhoto, indexToProgress, nicheAzimuth, nicheCount, progressToIndex, renderMode, workNiche,
@@ -60,7 +60,7 @@ describe('galerie : page', () => {
   });
   it("n'embarque plus la figurine ni l'ancienne identité", () => {
     expect(html).not.toMatch(/hero-illustration|hero-canvas|low-poly/);
-    expect(readFileSync('src/styles.css', 'utf8')).not.toMatch(/instrument-serif|dm-sans|@import/);
+    expect(readFileSync('src/styles.css', 'utf8')).not.toMatch(/instrument-serif|dm-sans|fontsource/);
   });
 });
 
@@ -91,5 +91,26 @@ describe('prove-mx-gal-01', () => {
   });
   it('NOT_PROVEN si le site est injoignable', () => {
     expect(evaluateGalerie({ ...ok, health: null, page: null }).verdict).toBe('NOT_PROVEN');
+  });
+});
+
+describe('polices auto-hébergées', () => {
+  const fichiers = [
+    'cormorant-garamond-normal-latin', 'cormorant-garamond-normal-latin-ext',
+    'cormorant-garamond-italic-latin', 'cormorant-garamond-italic-latin-ext',
+    'inter-normal-latin', 'inter-normal-latin-ext',
+  ].map((n) => `${n}.woff2`);
+  const fontsCss = readFileSync('public/fonts/fonts.css', 'utf8');
+
+  it('les 6 fichiers woff2 existent et fonts.css les référence', () => {
+    for (const f of fichiers) {
+      expect(existsSync(`public/fonts/${f}`), f).toBe(true);
+      expect(fontsCss).toContain(`/fonts/${f}`);
+    }
+  });
+  it('index.html charge fonts.css, sans service tiers ni fontsource', () => {
+    expect(html).toContain('href="/fonts/fonts.css"');
+    expect(html + readFileSync('package.json', 'utf8')).not.toMatch(/fontsource|googleapis|gstatic/);
+    expect(fontsCss).not.toMatch(/https?:\/\//);
   });
 });

@@ -1,5 +1,5 @@
 /* Identité MELIX ELEC : graphite / os / cuivre (frames Figma « Galerie 2026-11 », voir docs/design/SPEC.md).
-   Polices : Cormorant Garamond (titres) et Inter (texte), pile locale en attendant l'embarquement des fichiers (docs/ESCALADE-polices.md). */
+   Polices : Cormorant Garamond (titres) et Inter (texte), fichiers woff2 auto-hébergés dans public/fonts (déclarés par public/fonts/fonts.css, chargé depuis index.html ; docs/ESCALADE-polices.md). */
 
 :root {
   --os: #F3EFE7;
