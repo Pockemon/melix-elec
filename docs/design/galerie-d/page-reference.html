@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MELIX ELEC — Galerie · Direction D (A+B+3D)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--noir:#0B0B0D;--anth:#1B1C20;--anth2:#24252B;--ivoire:#ECE6DA;--muted:rgba(236,230,218,.62);--bronze:#8A5A2B;--or:#C9A24B;--or2:#E2C06A;--hair:rgba(201,162,75,.28)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:auto}
+html,body{background:var(--anth);color:var(--ivoire);font-family:'Space Grotesk',Inter,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:clip}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.06;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>")}
+.bebas{font-family:'Bebas Neue',Oswald,sans-serif;font-weight:400}
+.mono{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+nav{position:fixed;inset:0 0 auto 0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:20px 40px;background:linear-gradient(180deg,rgba(11,11,13,.8),transparent)}
+nav .brand{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:.14em;color:var(--or);display:flex;align-items:center}
+nav .brand i{display:inline-block;width:12px;height:12px;background:var(--or);margin-right:12px;transform:rotate(45deg)}
+nav ul{display:flex;gap:28px;list-style:none;font-size:14px}
+nav .cta{background:var(--or);color:#121212;padding:12px 18px;font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;box-shadow:4px 4px 0 var(--bronze)}
+.idx{position:fixed;right:40px;top:50%;transform:translateY(-50%);z-index:30;display:flex;flex-direction:column;gap:16px;align-items:flex-end}
+.idx span{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.12em;color:rgba(236,230,218,.35);display:flex;gap:10px;align-items:center;transition:color .3s}
+.idx span i{width:18px;height:2px;background:currentColor;display:inline-block;transition:width .3s}
+.idx span.on{color:var(--or)}.idx span.on i{width:40px}
+/* ---- chapitre plein écran (A) ---- */
+.chap{position:relative;height:100vh;min-height:680px;overflow:hidden;background:var(--noir)}
+.chap .bg{position:absolute;inset:-3%;background-size:cover;background-position:center;filter:none}
+.chap:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,11,13,.62) 0%,rgba(11,11,13,.18) 42%,rgba(11,11,13,0) 68%),linear-gradient(0deg,rgba(11,11,13,.62),transparent 38%),radial-gradient(ellipse 60% 50% at 70% 35%,rgba(201,162,75,.10),transparent 70%)}
+.chap .num{position:absolute;right:-1vw;top:6vh;z-index:1;font-size:30vw;line-height:.8;color:transparent;-webkit-text-stroke:1px rgba(201,162,75,.35);pointer-events:none}
+.k{position:absolute;left:40px;bottom:72px;z-index:2;max-width:720px}
+.k .mono{color:var(--or);margin-bottom:18px;display:flex;gap:14px;align-items:center}
+.k .mono:before{content:"";width:28px;height:2px;background:var(--or)}
+.k h1,.k h2{font-size:clamp(64px,9vw,150px);line-height:.86;letter-spacing:-.005em;color:var(--ivoire);text-shadow:5px 5px 0 var(--bronze)}
+.k h1 em,.k h2 em{font-style:normal;color:var(--or)}
+.k p{margin-top:22px;max-width:480px;font-size:17px;line-height:1.55;color:var(--muted)}
+.chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.chip{background:var(--or);color:#121212;font-weight:600;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:8px 12px;box-shadow:3px 3px 0 var(--bronze)}
+.chip.o{background:transparent;color:var(--or);border:1px solid var(--or);box-shadow:none}
+.meta{position:absolute;right:40px;bottom:72px;z-index:2;text-align:right;color:var(--muted);font-size:13px;line-height:1.7}
+.meta .mono{color:var(--or)}
+.meta b{display:block;font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:.04em;color:var(--ivoire);font-weight:400;line-height:1}
+.scrollhint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:2;color:var(--or);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:8px}
+.scrollhint i{width:1px;height:38px;background:linear-gradient(var(--or),transparent)}
+/* ---- section épinglée : vertical → horizontal + 3D (sweet-tape) ---- */
+#pin{position:relative;height:420vh;background:var(--anth)}
+#stage{position:sticky;top:0;height:100vh;overflow:hidden}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block;transition:opacity .4s;z-index:1}
+#track{position:absolute;top:0;left:0;height:100vh;display:flex;will-change:transform;z-index:2}
+.panel{width:100vw;height:100vh;flex:none;position:relative}
+.panel .k{bottom:auto;top:50%;transform:translateY(-50%);max-width:560px}
+.panel .k h2{font-size:clamp(60px,8vw,128px)}
+.panel .k .steps{margin-top:26px;display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:13px;color:var(--muted);max-width:420px}
+.panel .k .steps b{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--or);font-weight:500;letter-spacing:.12em}
+.panel .meta{bottom:72px}
+.panel .ghost{position:absolute;left:40px;top:12vh;font-size:22vw;line-height:.8;color:transparent;-webkit-text-stroke:1px rgba(201,162,75,.22);z-index:0;pointer-events:none}
+.panel .photo{position:absolute;right:40px;top:92px;width:150px;height:190px;background-size:cover;background-position:center;border:1px solid var(--hair);box-shadow:6px 6px 0 var(--bronze)}
+.panel .photo:after{content:attr(data-cap);position:absolute;left:0;right:0;bottom:-26px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--or)}
+#hud{position:absolute;left:40px;right:40px;bottom:30px;z-index:3;height:2px;background:rgba(236,230,218,.12)}
+#hud-progress{height:100%;width:0;background:var(--or)}
+#hud span{position:absolute;right:0;top:-22px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;color:var(--or);text-transform:uppercase}
+/* ---- bandeau (B) ---- */
+.band{background:var(--or);color:#121212;overflow:hidden;white-space:nowrap;padding:14px 0;font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:.08em;border-top:3px solid var(--bronze);border-bottom:3px solid var(--bronze);position:relative;z-index:3}
+.band div{display:inline-block;animation:mq 28s linear infinite}
+.band span{display:inline-block;padding:0 28px}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* ---- grille ---- */
+.grid{background:var(--anth);padding:110px 40px 100px}
+.grid .head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:54px}
+.grid .head h3{font-size:clamp(64px,9vw,130px);line-height:.84;color:var(--ivoire);letter-spacing:-.005em}
+.grid .head h3 em{font-style:normal;color:var(--or)}
+.grid .head .filters{display:flex;gap:10px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+.card{position:relative;background:var(--anth2);border:1px solid var(--hair);box-shadow:8px 8px 0 var(--bronze)}
+.card .im{aspect-ratio:4/5;background-size:cover;background-position:center}
+.card .n{display:flex;justify-content:space-between;align-items:baseline;padding:16px 16px 6px;font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.04em}
+.card .n span:last-child{color:var(--or);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em}
+.card .s{padding:0 16px 18px;font-size:13px;color:var(--muted)}
+.card .tag{position:absolute;left:14px;top:14px}
+/* ---- CTA ---- */
+.cta{padding:100px 40px 120px;background:var(--noir);text-align:center;border-top:1px solid var(--hair)}
+.cta h3{font-size:clamp(70px,9vw,150px);line-height:.88;color:var(--or);text-shadow:6px 6px 0 var(--bronze)}
+.cta p{margin:26px auto 0;max-width:520px;color:var(--muted);font-size:16px;line-height:1.5}
+.cta a{display:inline-block;margin-top:36px;background:var(--or);color:#121212;padding:18px 28px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;box-shadow:6px 6px 0 var(--bronze)}
+.foot{display:flex;justify-content:space-between;padding:26px 40px;border-top:1px solid var(--hair);background:var(--noir);color:var(--muted);font-size:12px}
+@media(max-width:700px){nav{padding:16px 20px}nav ul{display:none}nav .cta{padding:10px 12px;font-size:11px}.idx{display:none}
+.chap{min-height:640px}.chap .num{font-size:60vw;top:12vh;right:-4vw}.k{left:20px;right:20px;bottom:56px}.k h1,.k h2{font-size:58px;text-shadow:4px 4px 0 var(--bronze)}.k p{font-size:15px}.meta{display:none}
+.chap:after{background:linear-gradient(0deg,rgba(11,11,13,.88),rgba(11,11,13,.15) 55%)}
+.panel .k{top:auto;bottom:70px;transform:none}.panel .k h2{font-size:52px}.panel .k .steps{display:none}.panel .photo{display:none}.panel .ghost{left:20px;top:8vh;font-size:40vw}
+#hud{left:20px;right:20px;bottom:24px}
+.band{font-size:24px}.grid{padding:70px 20px 60px}.grid .head{flex-direction:column;align-items:flex-start;gap:16px;margin-bottom:34px}.grid .head h3{font-size:64px}
+.cards{grid-template-columns:1fr 1fr;gap:18px}.card{box-shadow:5px 5px 0 var(--bronze)}.card .n{font-size:20px;padding:12px 12px 4px}.card .s{padding:0 12px 14px;font-size:12px}
+.cta{padding:70px 20px 80px}.cta h3{font-size:60px}.foot{flex-direction:column;gap:8px;padding:22px 20px}}
+</style></head><body>
+<nav><div class="brand"><i></i>MELIX ELEC</div><ul><li>Galerie</li><li>Prestations</li><li>Sous-traitance</li><li>Devis</li></ul><a class="cta">Devis pro</a></nav>
+<div class="idx"><span class="on"><i></i>01</span><span><i></i>02</span><span><i></i>03</span></div>
+
+<!-- 1. chapitre plein écran : photo réelle de l'atelier (A), graphisme B -->
+<section class="chap"><div class="bg" style="background-image:url(IMG_ATELIER)"></div><div class="num bebas">01</div>
+<div class="k"><div class="mono">Atelier · Savoie — fabrication 3D</div><h1 class="bebas">GRAND<br><em>FORMAT</em></h1><p>Pièces jusqu'à 60 cm d'une seule traite, petites séries colorées, sous-traitance pour les pros. Tout est imprimé ici, puis fini à la main.</p>
+<div class="chips"><span class="chip">Pièces uniques</span><span class="chip o">Petites séries</span><span class="chip o">Sous-traitance</span></div></div>
+<div class="meta"><span class="mono">En cours d'impression</span><b>CASSE-NOISETTE</b>PLA · 41 h · 2026</div>
+<div class="scrollhint">Faites défiler<i></i></div></section>
+
+<!-- 2. section épinglée : le défilement vertical devient horizontal ; la pièce 3D tourne et se décompose -->
+<section id="pin"><div id="stage"><canvas id="gl"></canvas>
+<div id="track">
+  <div class="panel on"><div class="ghost bebas">01</div><div class="photo" style="background-image:url(IMG_ETAGERE)" data-cap="Pièce réelle"></div>
+    <div class="k"><div class="mono">01 / 03 — Série</div><h2 class="bebas">ÉTAGÈRES<br><em>HEXAGONALES</em></h2><p>Trois alvéoles, trois teintes, une fixation invisible. Chaque module sort d'une seule pièce.</p>
+    <div class="steps"><b>Matière</b><span>PLA mat</span><b>Largeur</b><span>32 cm par module</span><b>Série</b><span>3 à 30 pièces</span></div></div>
+    <div class="meta"><span class="mono">Décomposition</span><b>3 MODULES</b>impression en parallèle</div></div>
+  <div class="panel"><div class="ghost bebas">02</div><div class="photo" style="background-image:url(IMG_LAMPE)" data-cap="Pièce réelle"></div>
+    <div class="k"><div class="mono">02 / 03 — Pièce</div><h2 class="bebas">LAMPE<br><em>VAGUE</em></h2><p>Corps noir mat, diffuseur blanc en strates successives. Lumière chaude ou colorée, selon la pièce.</p>
+    <div class="steps"><b>Matière</b><span>PETG · PLA</span><b>Hauteur</b><span>28 cm</span><b>Strates</b><span>7 anneaux emboîtés</span></div></div>
+    <div class="meta"><span class="mono">Décomposition</span><b>9 PARTS</b>socle · 7 strates · bague</div></div>
+  <div class="panel"><div class="ghost bebas">03</div><div class="photo" style="background-image:url(IMG_CASSE)" data-cap="Sur le plateau"></div>
+    <div class="k"><div class="mono">03 / 03 — Grand format</div><h2 class="bebas">CASSE-<br><em>NOISETTE</em></h2><p>60 cm de haut. Au-delà du volume machine, la pièce est découpée, imprimée en tranches puis assemblée à l'atelier.</p>
+    <div class="steps"><b>Matière</b><span>PLA</span><b>Hauteur</b><span>60 cm</span><b>Impression</b><span>41 h · 5 tranches</span></div></div>
+    <div class="meta"><span class="mono">Décomposition</span><b>5 TRANCHES</b>découpe · tenons · assemblage</div></div>
+</div>
+<div id="hud"><div id="hud-progress"></div><span>Défilez pour décomposer</span></div>
+</div></section>
+
+<div class="band"><div><span>IMPRESSION 3D GRAND FORMAT</span><span>✦</span><span>PLA · PETG · TPU</span><span>✦</span><span>PIÈCES JUSQU'À 60 CM</span><span>✦</span><span>DEVIS SOUS 48 H</span><span>✦</span><span>IMPRESSION 3D GRAND FORMAT</span><span>✦</span><span>PLA · PETG · TPU</span><span>✦</span><span>PIÈCES JUSQU'À 60 CM</span><span>✦</span><span>DEVIS SOUS 48 H</span><span>✦</span></div></div>
+
+<section class="grid"><div class="head"><h3 class="bebas">TOUTES LES<br><em>PIÈCES</em></h3><div class="filters"><span class="chip">Toutes</span><span class="chip o">Objets</span><span class="chip o">Séries</span><span class="chip o">Atelier</span></div></div>
+<div class="cards">
+<div class="card"><div class="im" style="background-image:url(IMG_CASSE)"></div><span class="chip tag">60 cm</span><div class="n"><span>Casse-noisette</span><span>01</span></div><div class="s">Impression 3D, PLA · 2026</div></div>
+<div class="card"><div class="im" style="background-image:url(IMG_LAMPE)"></div><div class="n"><span>Lampe Vague</span><span>02</span></div><div class="s">PETG · PLA · 2026</div></div>
+<div class="card"><div class="im" style="background-image:url(IMG_ETAGERE)"></div><span class="chip tag">Série</span><div class="n"><span>Étagères hexagonales</span><span>03</span></div><div class="s">PLA mat · 3 teintes · 2026</div></div>
+<div class="card"><div class="im" style="background-image:url(IMG_ATELIER)"></div><div class="n"><span>Machine en atelier</span><span>04</span></div><div class="s">Grand format · 2026</div></div>
+</div></section>
+
+<section class="cta"><h3 class="bebas">ON IMPRIME<br>VOTRE PIÈCE.</h3><p>Envoyez un fichier ou une photo : vous recevez un devis chiffré sous 48 h, avec matière, délai et finition.</p><a>Obtenir un devis professionnel</a></section>
+<div class="foot"><span>MELIX ELEC — Fabrication 3D grand format, Savoie</span><span>Devis sous 48 h</span></div>
+<script>APP_JS</script>
+</body></html>

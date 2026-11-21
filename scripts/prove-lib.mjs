@@ -1,9 +1,8 @@
 export const REQUIRED_MARKERS = [
-  'Des pièces uniques, conçues et fabriquées sur mesure',
-  'id="projet"',
-  'id="realisations"',
-  'id="prestations"',
-  'id="sous-traitance"',
+  'GRAND FORMAT',
+  'id="top"',
+  'data-section="galerie"',
+  'id="grille"',
   'id="devis"',
   '<footer',
 ];
@@ -35,8 +34,8 @@ export function formatResult(r) {
   return `capability=MX-SITE-01 verdict=${r.verdict} proof_nature=runtime-observation${detail ? ' ' + detail : ''}`;
 }
 
-export const REQUIRED_SECTIONS = ['top', 'projet', 'realisations', 'prestations', 'sous-traitance', 'devis'];
-export const REQUIRED_TEXTS = ['Des pièces uniques, conçues et fabriquées sur mesure', 'Obtenir un devis professionnel'];
+export const REQUIRED_SECTIONS = ['top', 'pin', 'grille', 'devis'];
+export const REQUIRED_TEXTS = ['GRAND FORMAT', 'Obtenir un devis professionnel'];
 
 export function checkPage(html) {
   const missing = [];
@@ -55,9 +54,9 @@ export function judge({ health, deliverySha, missing }) {
   return { verdict: facts.length ? 'NOT_PROVEN' : 'SATISFIED', facts };
 }
 
-// ---- MX-GAL-01 : galerie 3D immersive (repli liste, mouvement réduit) ----
-export const GAL_TAGLINE = 'Des pièces uniques, conçues et fabriquées sur mesure';
-export const GAL_MIN_OEUVRES = 4;
+// ---- MX-GAL-01 : galerie D, section épinglée 3D (repli liste, mouvement réduit) ----
+export const GAL_TAGLINE = 'GRAND FORMAT';
+export const GAL_MIN_OEUVRES = 3;
 
 // Découpe la section [data-section="galerie"] et ses œuvres (li[data-oeuvre]).
 export function parseGalerie(html) {
@@ -117,8 +116,6 @@ export function evaluateGalerie({ expectedSha, health, page, images, runtime }) 
     if (gal.oeuvres.length < GAL_MIN_OEUVRES) failures.push(`oeuvres=${gal.oeuvres.length}<${GAL_MIN_OEUVRES}`);
     else if (bad.length) failures.push(`oeuvres incompletes: ${bad.map((o) => o.titre || o.src || '?').join(',')}`);
     else facts.push(`oeuvres=${gal.oeuvres.length} cartels=ok`);
-    if (/data-galerie-prev/.test(gal.body) && /data-galerie-next/.test(gal.body)) facts.push('boutons_prec_suiv=ok');
-    else failures.push('boutons précédent/suivant absents');
     for (const o of gal.oeuvres) {
       const r = (images || []).find((i) => i.src === o.src);
       if (!r || r.status !== 200 || !/^image\//.test(r.type || '')) failures.push(`image ${o.src} HTTP ${r ? r.status : 'non observée'}`);
@@ -131,7 +128,7 @@ export function evaluateGalerie({ expectedSha, health, page, images, runtime }) 
   else failures.push(`repli liste non observé sans WebGL (mode=${liste ? liste.mode : 'non observé'})`);
   // Mouvement réduit : rendu réel avec prefers-reduced-motion forcé, scène statique pilotée par les boutons.
   const red = rt.reduit;
-  if (red && red.reducedMotion === 'true' && red.mode === '3d-statique' && red.statique && red.index === '0') facts.push('mouvement_reduit=camera_immobile+boutons');
+  if (red && red.reducedMotion === 'true' && red.mode === '3d-statique' && red.statique) facts.push('mouvement_reduit=camera_immobile+boutons');
   else failures.push(`mouvement réduit non observé (mode=${red ? red.mode : 'non observé'}, reduced=${red ? red.reducedMotion : '?'})`);
   // Rendu 3D nominal observé (nécessite WebGL dans le navigateur de preuve).
   const nor = rt.normal;

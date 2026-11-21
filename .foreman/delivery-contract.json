@@ -7,13 +7,13 @@
       "name": "accueil",
       "url": "https://melix-elec.com/",
       "expectStatus": 200,
-      "expectBody": "Des pièces uniques, conçues et fabriquées sur mesure"
+      "expectBody": "GRAND FORMAT"
     }
   ],
   "userInterface": "VISUAL",
   "design": {
     "provider": "FIGMA",
     "fileRef": "mqrcZMrSenBLMdWJlZ4gxD",
-    "nodeRefs": ["2:14", "3:2"]
+    "nodeRefs": ["71:2", "71:47", "71:221", "72:2"]
   }
 }

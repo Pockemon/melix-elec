@@ -1,6 +1,15 @@
 import './styles.css';
 import { buildMailto, type QuoteFields } from './mailto';
 
+// Formulaire de devis : ouvre un e-mail pré-rempli (aucune donnée enregistrée). Le CTA garde son lien mailto sans JS.
+const dialog = document.getElementById('quote-dialog') as HTMLDialogElement;
+document.getElementById('devis-open')?.addEventListener('click', (e) => {
+  if (typeof dialog.showModal !== 'function') return;
+  e.preventDefault();
+  dialog.showModal();
+});
+document.getElementById('quote-close')?.addEventListener('click', () => dialog.close());
+
 const form = document.getElementById('quote-form') as HTMLFormElement;
 form.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -13,21 +22,5 @@ form.addEventListener('submit', (e) => {
   window.location.href = buildMailto(fields);
 });
 
-const menuBtn = document.getElementById('menu-btn') as HTMLButtonElement;
-const menu = document.getElementById('menu')!;
-const setMenu = (open: boolean) => {
-  menu.classList.toggle('open', open);
-  menuBtn.setAttribute('aria-expanded', String(open));
-};
-menuBtn.addEventListener('click', () => setMenu(!menu.classList.contains('open')));
-menu.addEventListener('click', (e) => {
-  if ((e.target as HTMLElement).closest('a')) setMenu(false);
-});
-document.addEventListener('keydown', (e) => e.key === 'Escape' && setMenu(false));
-
-document.getElementById('mentions-link')?.addEventListener('click', () => {
-  document.getElementById('mentions')!.hidden = false;
-});
-
-// Three.js se charge hors du chemin critique ; la liste des œuvres reste le repli sans WebGL.
-void import('./galerie').then((m) => m.initGalerie());
+// Three.js se charge hors du chemin critique (chunk séparé) ; le repli liste fonctionne sans lui.
+void import('./galerie-d').then((m) => m.initGalerie());
