@@ -16,3 +16,6 @@ Arbitrage demandé (rôle de décision) :
 4. Le nom de la commande de preuve est `prove-mx-gal-01`. Doit-elle vérifier health.sha, les sections de la galerie et le repli liste sans WebGL, comme `prove-mx-site-01` ?
 
 Je reprends l'implémentation quand la décision est rendue. La preuve `prove-mx-gal-01` sera exécutée par Foreman après livraison.
+
+## Arbitrage reçu (Cowork, 21/11) — appliqué
+Le Figma est complété en parallèle ; la spécification textuelle est reportée dans `docs/design/SPEC.md` et `docs/FIGMA.md`. La figurine low-poly, la palette pastel et Instrument Serif / DM Sans sont supprimées (`ESCALADE-hero.md` retiré). L'accroche devient « Des pièces uniques, conçues et fabriquées sur mesure. » (`.foreman/delivery-contract.json`, `scripts/prove-lib.mjs`). `prove-mx-gal-01` est livrée (`scripts/prove-mx-gal-01.mjs`). Point resté ouvert : `docs/ESCALADE-polices.md`.

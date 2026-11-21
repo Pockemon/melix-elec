@@ -1,133 +1,43 @@
-# MELIX ELEC — Vitrine : spécification extraite de Figma
+# MELIX ELEC — Spécification design (frames « Galerie 2026-11 »)
 
-Source de vérité : Figma `mqrcZMrSenBLMdWJlZ4gxD`. Desktop 1440 : nœud `2:14` (5567 px de haut). Mobile 390 : nœud `3:2`.
-Captures : `desktop-1440.png` et `mobile-390.png`, dans ce dossier.
-Consigne : implémenter fidèlement, sans réinterpréter le design.
+Source de vérité : Figma `mqrcZMrSenBLMdWJlZ4gxD`, page « Galerie 2026-11 », frames 1440 et 390 (nœuds `2:14` et `3:2` de la consigne).
+Arbitrage Cowork du 21/11 : les frames sont ajoutées au Figma en parallèle ; **la spécification ci-dessous fait foi** tant qu'elles ne sont pas relues, et le contrôle visuel (candidate-check) se fait contre elles.
+La décision de Jean du 18/11 remplace toute la spécification précédente : plus de figurine low-poly, plus de palette pastel, plus d'Instrument Serif / DM Sans, plus de grosse typographie.
 
 ## Tokens
 | Variable | Valeur | Usage |
 |---|---|---|
-| fond/page | #FBF6EF | fond principal (dominante claire) |
-| fond/section | #F5EBDF | section Prestations |
-| fond/carte | #F1DFD0 | cartes, champs de formulaire, fond du visuel |
-| pastel/peche | #F6D9C9 | section Projet phare |
-| pastel/sauge | #D7DEC9 | section Sous-traitance |
-| pastel/abricot | #F3C9A8 | accents 3D |
-| pastel/rose | #EFCFC8 | accents 3D |
-| pastel/sable | #EADBC3 | accents 3D |
-| trait/fin | #E8D8C8 | filets et bordures (1 px) |
-| texte/principal | #2B2420 | |
-| texte/secondaire | #6E6058 | |
-| texte/tertiaire | #9A8B80 | |
-| texte/etiquette | #C07A55 | étiquettes en capitales |
-| action/principal | #3A2C25 | bouton plein |
-| texte/inverse | #FBF6EF | texte des boutons pleins |
+| os | #F3EFE7 | fond de page |
+| graphite | #1E1F1D | texte, boutons pleins, section Sous-traitance, plinthe |
+| cuivre | #B4703A | accents, filets de cadres, survol |
+| blanc cassé | #FAF8F3 | murs de la galerie, sections Prestations/Devis, cartels |
+| pierre | #CFC9BE | sol de la galerie, contours de champs |
 
-### Typographie
-- Titres : Instrument Serif Regular, interlettrage -1,5 %, interligne 100 %. Tailles : 90 (héros), 61 (sections), 47 (chiffres).
-- Texte : DM Sans. Regular pour le texte courant, Medium pour les étiquettes en 12 px capitales à +12 %, SemiBold pour les intertitres (22 px).
+Dérivés, ajoutés pour tenir le contraste AA (le cuivre seul est à 3,4:1 sur l'os) : texte secondaire #55564F, tertiaire #62635C, cuivre de texte #8A5428 (étiquettes sur clair), cuivre clair #D08F58 (étiquettes sur graphite), filets #DDD6C8.
 
-### Boutons
-- Pleins : fond action/principal, texte inverse en DM Sans SemiBold 15, padding 15 × 24, rayon 999.
-- Secondaires : contour 1 px texte/tertiaire.
+## Typographie
+- Titres : Cormorant Garamond 300/400, italique autorisé. 64 / 40 / 28 px (1440) ; 40 / 28 / 22 px (390).
+- Texte : Inter 400/500, 16 / 14 px. Cartels : Inter 13 px.
+- Lettrage fin, jamais de grosse typographie.
 
-### Mise en page
-- Sections : padding 120 / 120, sauf la navigation (24 / 120), le héros (96 / 120), les chiffres (40 / 120) et le pied de page (40 / 120). Largeur utile : 1200 px.
-- Rayons : cartes photo 18, visuel casse-noisette 24, scène 3D 28, cartes d'étape 20.
+## Accueil
+- Accroche (h1) : « Des pièces uniques, conçues et fabriquées sur mesure. », suivie d'un court texte et de deux boutons.
+- La galerie 3D est la section « réalisations » (`#realisations`, `data-section="galerie"`) et occupe l'accueil. Les sections Projet phare, Prestations, En option, Sous-traitance et Devis suivent dans la même identité.
 
-## Détail par section (texte, police, taille, couleur)
-- **Navigation** (hauteur 99, espacement 40, bordure basse trait/fin) :
-  - logo : carré de 28 px action/principal, rayon 6 ;
-  - « MELIX ELEC » en SemiBold 20 texte/principal, suivi de « FABRICATION 3D GRAND FORMAT » en Medium 11 texte/tertiaire ;
-  - liens Réalisations · Prestations · Sous-traitance · Devis en Medium 15 texte/secondaire ;
-  - bouton plein « Obtenir un devis professionnel ».
-- **Héros** (hauteur 832, espacement 48). Colonne gauche de 640 :
-  - étiquette « Pôle fabrication additive · Savoie » ;
-  - titre « Vos créations prennent une autre dimension. » en Instrument Serif 90 ;
-  - sous-titre en 19 texte/secondaire ;
-  - boutons « Demander une fabrication sur mesure » (plein) et « Devenir partenaire de production » (contour).
-  À droite, la scène 3D de 600 × 640, rayon 28 :
-  - repère en haut à gauche « PIÈCE 03 / 08 · ASSEMBLAGE À TENONS » ;
-  - mention en bas « Illustration 3D interactive · la sculpture s'assemble au défilement » : pastille fond/page à 92 %, Medium 11.
-  - Repli sans WebGL : `public/images/hero-illustration.png`.
-- **Chiffres** (filets haut et bas) : 4 colonnes égales, valeur en Instrument Serif 47, légende en DM Sans 14 texte/tertiaire.
-  - 1,20 m · Casse-noisette en cours de fabrication
-  - XXL · Pièces assemblées par éléments
-  - 1 → série · Pièce unique ou petite série
-  - 0 moule · Fabrication directe depuis le fichier 3D
-- **Projet phare** (fond pastel/peche) :
-  - visuel de 600 × 720, rayon 24, fond fond/carte, badge « FABRICATION EN COURS » (fond action/principal, texte inverse). C'est ici que se placent la visionneuse 3D (`public/models/casse-noisette.glb`) et les photos réelles.
-  - à droite :
-    - étiquette « Projet phare » ;
-    - titre « Un casse-noisette de 1,20 m, imprimé pièce par pièce. » en 61 ;
-    - paragraphe en 18 : « Notre premier projet monumental est en cours d'impression dans l'atelier. Chaque élément est découpé pour tenir sur nos plateaux, puis assemblé par tenons invisibles. Un exemple concret de ce que nous fabriquons pour vous. » ;
-    - tableau de 4 lignes avec filets trait/fin : Hauteur 1,20 m / Construction Éléments assemblés / Finition Monochrome, prêt à peindre / Statut Impression en cours.
-- **Réalisations** (fond/page, espacement 48) :
-  - étiquette, puis le titre « Des pièces finies, pensées pour être vues. » ;
-  - 4 cartes de largeur égale, espacement 24, photo de 282 × 352 rayon 18, titre en SemiBold 22, sous-titre en 15 texte/tertiaire :
-    - Lampe Vague · Lampe design · lumière LED
-    - Étagères hexagonales · Mobilier mural modulaire
-    - Citrouille lumineuse · Décor saisonnier 36 cm
-    - Masque crâne · Pièce décorative sculptée
-  - mention « Photos réelles de pièces produites à l'atelier. »
-- **Prestations** (fond/section) :
-  - étiquette « PRESTATIONS », puis le titre « Du fichier à la pièce monumentale. » ;
-  - 2 colonnes, 4 rangées, filet haut sur chaque élément ;
-  - chaque élément : numéro 01 à 08 en Medium 12 action/principal, titre en SemiBold 22, description en 16 texte/tertiaire.
-    - Conception et adaptation de modèles 3D — Nous préparons ou adaptons votre modèle pour la fabrication grand format.
-    - Sculptures et figurines grand format — Pièces monumentales découpées et assemblées sans colle hasardeuse.
-    - Mascottes et personnages — Personnages de marque, festifs ou décoratifs, à l'échelle voulue.
-    - Objets surdimensionnés — Reproduction d'objets à une échelle spectaculaire.
-    - Prototypes et pièces spécifiques — Éléments non standard à intégrer dans vos décors.
-    - Petites et moyennes séries — Pièce unique ou série personnalisée, sans moule.
-    - Production en marque blanche — Pour les scénographes et fabricants de décors.
-    - Peinture et finition en option — Finition polychrome réalisée par un partenaire spécialisé.
-- **Sous-traitance** (fond pastel/sauge) :
-  - étiquette « Partenaire de production », titre « Votre renfort de fabrication, discret et fiable. » ;
-  - à droite, en 18 : « Nous produisons en marque blanche pour les agences de scénographie, les fabricants de décors et les organisateurs d'événements. Production monochrome, prête à intégrer ou à peindre par vos équipes ; finition peinte sur demande via un partenaire. » ;
-  - 4 cartes d'étape (fond/carte, padding 28, rayon 20) :
-    - 01 Brief et fichiers — Vos dimensions, quantités, échéance et modèle 3D ou références.
-    - 02 Étude et découpe — Découpage en éléments imprimables et assemblables.
-    - 03 Fabrication — Impression monochrome dans la teinte choisie.
-    - 04 Livraison — Pièces prêtes à assembler, intégrer ou peindre.
-- **Devis** (fond/page) :
-  - colonne gauche :
-    - étiquette « Devis professionnel » ;
-    - titre « Parlons de votre projet. » ;
-    - texte « Décrivez votre pièce : nous revenons vers vous par e-mail et convenons d'un échange téléphonique pour l'étudier. » ;
-    - adresse « melix.elec@gmail.com ».
-  - à droite, un formulaire (fond fond/section, padding 40, rayon 24) :
-    - champs par paires : Entreprise et Contact ; Type de pièce et Dimensions approximatives ; Quantité et Modèle 3D ; Couleur et finition et Utilisation ; Date de livraison souhaitée et Adresse de livraison ;
-    - champ « Fichiers ou visuels de référence » de 88 px ;
-    - bouton plein « Obtenir un devis professionnel » ;
-    - champs : fond fond/carte, contour trait/fin, rayon 12, padding 14 × 16.
-- **Pied de page** : « MELIX ELEC · SASU · Pôle fabrication 3D grand format · Électricité et VMC », puis « melix.elec@gmail.com · Mentions légales », en 13 texte/tertiaire.
+## Galerie Three.js
+- Salle circulaire claire : murs #FAF8F3, sol #CFC9BE avec filet cuivre, plafond avec halo lumineux FIXE et discret (jamais lié à la caméra).
+- 8 niches en arche à intervalle régulier (45°). Les 4 œuvres occupent une niche sur deux ; la caméra les parcourt.
+- Chaque œuvre : photo réelle dans un cadre blanc fin avec filet cuivre, cartel dessous (titre, matière, année, Inter).
+- Œuvres : Lampe Vague, Étagères hexagonales, Citrouille lumineuse, Masque crâne (photos de `public/images/`). Aucune photo mise en scène, aucune image générée.
+- Caméra : le défilement de la page fait avancer la caméra d'une niche à la suivante, avec amortissement ; le glissé horizontal est converti en défilement ; boutons précédent/suivant toujours présents.
+- Sans WebGL (ou `?webgl=off`) : liste verticale des mêmes œuvres (image + cartel), présente dans le DOM.
+- `prefers-reduced-motion` : aucun mouvement automatique, caméra immobile entre deux clics, navigation par les boutons.
+- Performance : textures ≤ 1600 px, chargement progressif (œuvre courante d'abord), rendu à la demande, aucune bibliothèque hors `three`.
 
-## Mobile 390
-Même ordre de sections, colonnes empilées, padding 24, titres en Instrument Serif 40 à 36. Scène 3D de 342 × 380. Réalisations en grille 2 × 2. Formulaire sur une colonne.
+## Critères
+Page publiée conforme à 1440 et 390, aucun débordement, 0 erreur console, Lighthouse accessibilité ≥ 90.
 
-## Révision 18/11 — palette noble (décision de Jean, remplace la palette et le héros ci-dessus)
-La palette pastel (pêche, sauge, abricot, terracotta) est caduque. Le fichier Figma a été mis à jour en conséquence.
-
-| Variable | Valeur | Usage |
-|---|---|---|
-| fond/page | #F7F4EE | fond principal |
-| fond/section | #EFE9DF | Prestations, formulaire |
-| fond/carte | #F3EDE3 | cartes, champs, fond du visuel |
-| trait/fin | #E2D8C6 | filets et bordures |
-| texte/principal | #161412 | |
-| texte/fort | #0F0E0D | |
-| texte/secondaire | #5E574F | |
-| texte/tertiaire | #8E867C | assombri à #655E55 dans le code pour le contraste AA |
-| texte/etiquette | #8C5E2E | |
-| texte/inverse | #F7F4EE | |
-| action/principal | #141210 | boutons pleins, texte #F7F4EE, rayon 999 |
-| bronze | #A8743F | tenons |
-| champagne | #E9DCC4 | section Projet phare |
-| noir | #1B1916 | section Sous-traitance, socle |
-| or | #C8A14B | bordures des cartes « En option », accents sur fond noir |
-| sable | #E4D3AE | accent |
-
-- **Sous-traitance** : fond #1B1916, textes inverses.
-- **Héros** : casse-noisette soldat low-poly facetté, entièrement blanc ivoire (#F4F1EA, mat, flatShading, roughness 0,9), d'après le modèle de Jean : grand shako cylindrique, visage à moustache et barbe, épaulettes, veste à brandebourgs, ceinture, bras le long du corps tenant un sabre, jambes droites, bottes, socle noir. Mention « Hauteur 1,20 m ». Vue éclatée et assemblage au défilement inchangés. Repli sans WebGL : `public/images/hero-illustration.png`, capture du canvas assemblé sur fond #F7F4EE ; alt « Casse-noisette soldat low-poly blanc, 1,20 m, imprimé en 3D ».
-- **Section « En option »** (après Prestations) : étiquette « EN OPTION », titre « Des pièces qui vont plus loin. », 3 cartes (fond #F3EDE3, bordure 1 px or, rayon 20), grille 3 colonnes desktop, 1 colonne mobile : QR codes imprimés en 3D · Puces NFC intégrées · Éclairage intégré.
+## Écarts à valider
+- Les cartels portent « Impression 3D, PLA » et « 2026 » : matière et année ne figurent nulle part dans le dépôt, à confirmer par l'atelier.
+- Les photos « casse-noisette en atelier » et « imprimantes » citées par la consigne n'existent pas dans `public/images/` : la galerie utilise les quatre photos présentes. À déposer pour les ajouter (une œuvre de plus = un `<li data-oeuvre>`).
+- Polices : voir `docs/ESCALADE-polices.md`.
