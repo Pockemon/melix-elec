@@ -70,7 +70,11 @@ describe('prove-mx-gal-01', () => {
     expectedSha: 'abc',
     health: { status: 200, body: JSON.stringify({ status: 'ok', sha: 'abc' }) },
     page: { status: 200, body: html },
-    bundle: 'matchMedia("(prefers-reduced-motion: reduce)");getContext("webgl2");get("webgl")==="off"',
+    runtime: {
+      liste: { mode: 'liste', gl: false, statique: false, reducedMotion: 'false', index: '0' },
+      normal: { mode: '3d', gl: true, statique: false, reducedMotion: 'false', index: '0' },
+      reduit: { mode: '3d-statique', gl: true, statique: true, reducedMotion: 'true', index: '0' },
+    },
     images,
   };
   it('SATISFIED sur la page du dépôt quand health.sha = delivery_sha', () => {
@@ -80,7 +84,9 @@ describe('prove-mx-gal-01', () => {
   it("NOT_PROVEN si le SHA diffère, si une œuvre manque ou si le code publié n'a pas le mouvement réduit", () => {
     expect(evaluateGalerie({ ...ok, health: { status: 200, body: JSON.stringify({ status: 'ok', sha: 'old' }) } }).verdict).toBe('NOT_PROVEN');
     expect(evaluateGalerie({ ...ok, page: { status: 200, body: html.replace(/<li data-oeuvre>/g, '<li>') } }).verdict).toBe('NOT_PROVEN');
-    expect(evaluateGalerie({ ...ok, bundle: '' }).verdict).toBe('NOT_PROVEN');
+    expect(evaluateGalerie({ ...ok, runtime: {} }).verdict).toBe('NOT_PROVEN');
+    expect(evaluateGalerie({ ...ok, runtime: { ...ok.runtime, liste: { ...ok.runtime.liste, mode: '3d', gl: true } } }).verdict).toBe('NOT_PROVEN');
+    expect(evaluateGalerie({ ...ok, runtime: { ...ok.runtime, reduit: { ...ok.runtime.reduit, mode: '3d', statique: false } } }).verdict).toBe('NOT_PROVEN');
     expect(evaluateGalerie({ ...ok, images: [] }).verdict).toBe('NOT_PROVEN');
   });
   it('NOT_PROVEN si le site est injoignable', () => {

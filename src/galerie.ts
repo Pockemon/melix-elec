@@ -119,6 +119,10 @@ export function initGalerie(): void {
   const oeuvres = parseOeuvres(section.querySelectorAll('li[data-oeuvre]'));
   const count = oeuvres.length;
   if (count === 0) return;
+  // Mode observable (preuve RUNTIME) : liste par défaut, 3d / 3d-statique une fois WebGL initialisé.
+  section.dataset.galerieMode = 'liste';
+  section.dataset.galerieIndex = '0';
+  section.dataset.reducedMotion = String(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   if (renderMode(location.search, webglSupported()) === 'liste') return; // repli liste, déjà dans le DOM
 
   let renderer: WebGLRenderer;
@@ -133,6 +137,7 @@ export function initGalerie(): void {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   section.classList.add('galerie--gl');
   if (reduced) section.classList.add('galerie--statique');
+  section.dataset.galerieMode = reduced ? '3d-statique' : '3d';
   section.style.setProperty('--n', String(count));
   canvas.hidden = false;
   ui.hidden = false;
@@ -187,6 +192,7 @@ export function initGalerie(): void {
   const filetMat = new MeshBasicMaterial({ color: CUIVRE });
   const loader = new TextureLoader();
   const photos: Mesh[] = [];
+  const cartels: { mesh: Mesh; o: Oeuvre }[] = [];
 
   for (let k = 0; k < niches; k++) {
     const g = new Group();
@@ -210,6 +216,7 @@ export function initGalerie(): void {
       photo.position.set(0, FRAME_Y, zf + 0.0265);
       photos[w] = photo;
       const cartel = new Mesh(new PlaneGeometry(1.5, 0.3125), new MeshBasicMaterial({ map: cartelTexture(o) }));
+      cartels.push({ mesh: cartel, o });
       cartel.position.set(0, FRAME_Y - ph / 2 - 0.06 - 0.22, zf + 0.01);
       g.add(frame, filet, photo, cartel);
     }
@@ -294,6 +301,7 @@ export function initGalerie(): void {
   const updateLabel = (i: number) => {
     if (i === label) return;
     label = i;
+    section.dataset.galerieIndex = String(i);
     compteur.textContent = `${String(i + 1).padStart(2, '0')} / ${String(count).padStart(2, '0')} · ${oeuvres[i].titre}`;
   };
 
@@ -336,10 +344,23 @@ export function initGalerie(): void {
   canvas.addEventListener('webglcontextlost', (e) => {
     e.preventDefault();
     section.classList.remove('galerie--gl', 'galerie--statique');
+    section.dataset.galerieMode = 'liste';
     canvas.hidden = true;
     ui.hidden = true;
   });
-  void (document.fonts?.ready ?? Promise.resolve()).then(() => {
+  // Les cartels sont des textures canvas : on les redessine une fois Inter chargée.
+  const fonts = document.fonts;
+  void Promise.resolve(fonts?.load('500 38px Inter'))
+    .then(() => fonts?.load('400 30px Inter'))
+    .catch(() => undefined)
+    .then(() => fonts?.ready)
+    .then(() => {
+    for (const { mesh, o } of cartels) {
+      const m = mesh.material as MeshBasicMaterial;
+      m.map?.dispose();
+      m.map = cartelTexture(o);
+      m.needsUpdate = true;
+    }
     invalidate();
   });
   resize();

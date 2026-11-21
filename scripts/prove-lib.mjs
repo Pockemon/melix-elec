@@ -79,8 +79,18 @@ export function parseGalerie(html) {
   return { body, oeuvres };
 }
 
-// Observations : health, page d'accueil, bundles JS (texte concaténé), réponses des images.
-export function evaluateGalerie({ expectedSha, health, page, bundle, images }) {
+// Lit l'état de la section galerie dans le DOM RENDU (dump après exécution du JS publié).
+export function observeGalerie(dom) {
+  const tag = /<section\b[^>]*data-section=["']galerie["'][^>]*>/.exec(dom || '')?.[0];
+  if (!tag) return null;
+  const attr = (n) => (new RegExp(String.raw`\bdata-${n}=["']([^"']*)["']`).exec(tag) || [])[1];
+  const cls = (/\bclass=["']([^"']*)["']/.exec(tag) || [])[1] || '';
+  return { mode: attr('galerie-mode'), index: attr('galerie-index'), reducedMotion: attr('reduced-motion'), gl: /\bgalerie--gl\b/.test(cls), statique: /\bgalerie--statique\b/.test(cls) };
+}
+
+// Observations : health, page servie, réponses des images, et trois rendus réels du navigateur
+// runtime = { liste: observeGalerie(DOM avec ?webgl=off), normal: observeGalerie(DOM par défaut), reduit: observeGalerie(DOM avec prefers-reduced-motion forcé) }.
+export function evaluateGalerie({ expectedSha, health, page, images, runtime }) {
   const facts = [];
   const failures = [];
   if (!health || health.status !== 200) failures.push(`health.json HTTP ${health ? health.status : 'injoignable'}`);
@@ -107,8 +117,6 @@ export function evaluateGalerie({ expectedSha, health, page, bundle, images }) {
     if (gal.oeuvres.length < GAL_MIN_OEUVRES) failures.push(`oeuvres=${gal.oeuvres.length}<${GAL_MIN_OEUVRES}`);
     else if (bad.length) failures.push(`oeuvres incompletes: ${bad.map((o) => o.titre || o.src || '?').join(',')}`);
     else facts.push(`oeuvres=${gal.oeuvres.length} cartels=ok`);
-    if (/id=["']galerie-liste["']/.test(gal.body) && /<ol\b/.test(gal.body)) facts.push('repli_liste=dom');
-    else failures.push('repli liste absent du DOM');
     if (/data-galerie-prev/.test(gal.body) && /data-galerie-next/.test(gal.body)) facts.push('boutons_prec_suiv=ok');
     else failures.push('boutons précédent/suivant absents');
     for (const o of gal.oeuvres) {
@@ -116,10 +124,19 @@ export function evaluateGalerie({ expectedSha, health, page, bundle, images }) {
       if (!r || r.status !== 200 || !/^image\//.test(r.type || '')) failures.push(`image ${o.src} HTTP ${r ? r.status : 'non observée'}`);
     }
   }
-  const js = bundle || '';
-  if (/prefers-reduced-motion/.test(js)) facts.push('mouvement_reduit=ok'); else failures.push('prefers-reduced-motion absent du code publié');
-  if (/webgl2?["']/.test(js) && /["']off["']/.test(js)) facts.push('detection_webgl_forcable=ok');
-  else failures.push('détection WebGL forçable (?webgl=off) absente du code publié');
+  const rt = runtime || {};
+  // Repli liste : rendu réel avec WebGL désactivé, liste dans le DOM et scène 3D non activée.
+  const liste = rt.liste;
+  if (liste && liste.mode === 'liste' && !liste.gl && gal && gal.oeuvres.length >= GAL_MIN_OEUVRES) facts.push('repli_liste=rendu(?webgl=off)');
+  else failures.push(`repli liste non observé sans WebGL (mode=${liste ? liste.mode : 'non observé'})`);
+  // Mouvement réduit : rendu réel avec prefers-reduced-motion forcé, scène statique pilotée par les boutons.
+  const red = rt.reduit;
+  if (red && red.reducedMotion === 'true' && red.mode === '3d-statique' && red.statique && red.index === '0') facts.push('mouvement_reduit=camera_immobile+boutons');
+  else failures.push(`mouvement réduit non observé (mode=${red ? red.mode : 'non observé'}, reduced=${red ? red.reducedMotion : '?'})`);
+  // Rendu 3D nominal observé (nécessite WebGL dans le navigateur de preuve).
+  const nor = rt.normal;
+  if (nor && nor.mode === '3d' && nor.gl) facts.push('galerie_3d=rendue');
+  else failures.push(`galerie 3D non rendue (mode=${nor ? nor.mode : 'non observé'})`);
   return { verdict: failures.length ? 'NOT_PROVEN' : 'SATISFIED', facts, failures };
 }
 

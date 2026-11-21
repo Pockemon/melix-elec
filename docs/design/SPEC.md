@@ -26,9 +26,9 @@ Dérivés, ajoutés pour tenir le contraste AA (le cuivre seul est à 3,4:1 sur 
 
 ## Galerie Three.js
 - Salle circulaire claire : murs #FAF8F3, sol #CFC9BE avec filet cuivre, plafond avec halo lumineux FIXE et discret (jamais lié à la caméra).
-- 8 niches en arche à intervalle régulier (45°). Les 4 œuvres occupent une niche sur deux ; la caméra les parcourt.
+- 6 niches en arche à intervalle régulier (60°), une œuvre par niche ; la caméra les parcourt.
 - Chaque œuvre : photo réelle dans un cadre blanc fin avec filet cuivre, cartel dessous (titre, matière, année, Inter).
-- Œuvres : Lampe Vague, Étagères hexagonales, Citrouille lumineuse, Masque crâne (photos de `public/images/`). Aucune photo mise en scène, aucune image générée.
+- Œuvres : Casse-noisette en atelier, Lampe Vague, Étagères hexagonales, Imprimante de l’atelier, Citrouille lumineuse, Masque crâne (photos de `public/images/`). Aucune photo mise en scène, aucune image générée.
 - Caméra : le défilement de la page fait avancer la caméra d'une niche à la suivante, avec amortissement ; le glissé horizontal est converti en défilement ; boutons précédent/suivant toujours présents.
 - Sans WebGL (ou `?webgl=off`) : liste verticale des mêmes œuvres (image + cartel), présente dans le DOM.
 - `prefers-reduced-motion` : aucun mouvement automatique, caméra immobile entre deux clics, navigation par les boutons.
@@ -39,5 +39,4 @@ Page publiée conforme à 1440 et 390, aucun débordement, 0 erreur console, Lig
 
 ## Écarts à valider
 - Les cartels portent « Impression 3D, PLA » et « 2026 » : matière et année ne figurent nulle part dans le dépôt, à confirmer par l'atelier.
-- Les photos « casse-noisette en atelier » et « imprimantes » citées par la consigne n'existent pas dans `public/images/` : la galerie utilise les quatre photos présentes. À déposer pour les ajouter (une œuvre de plus = un `<li data-oeuvre>`).
 - Polices : voir `docs/ESCALADE-polices.md`.
