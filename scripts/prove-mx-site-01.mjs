@@ -6,7 +6,7 @@ import { execFileSync } from 'node:child_process';
 import { evaluate, formatResult } from './prove-lib.mjs';
 
 const arg = (name) => { const i = process.argv.indexOf(name); return i > 0 ? process.argv[i + 1] : undefined; };
-const base = (arg('--url') || process.env.SITE_URL || 'https://melix-elec.com').replace(/\/+$/, '');
+const base = (arg('--url') || process.env.SITE_URL || process.env.PROVE_URL || 'https://melix-elec.com').replace(/\/+$/, '');
 let sha = arg('--sha') || process.env.DELIVERY_SHA || process.env.GITHUB_SHA;
 if (!sha) { try { sha = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(); } catch { sha = ''; } }
 
