@@ -31,3 +31,21 @@ describe('preuve MX-SITE-01 (checkPage / judge)', () => {
     expect(checkPage('<main></main>')).toContain('#devis');
   });
 });
+
+import { checkGlb, evaluate as evaluate3d, formatResult as format3d } from '../scripts/prove-mx-3d-02-lib.mjs';
+import { readFileSync } from 'node:fs';
+
+describe('prove-mx-3d-02', () => {
+  const glb = readFileSync('public/models/casse-noisette.glb');
+  const ok = { expectedSha: 'abc', health: health('abc'), page: { status: 200, body: 'id="viewer-canvas" id="viewer-fallback"' }, glb: { status: 200, buffer: glb }, scripts: ['x("/models/casse-noisette.glb")'] };
+  it('le GLB livré est valide', () => expect(checkGlb(glb)).toBeNull());
+  it('SATISFIED quand modèle valide, référencé et SHA = delivery_sha', () => {
+    expect(format3d(evaluate3d(ok))).toMatch(/^capability=MX-3D-02 verdict=SATISFIED proof_nature=runtime-observation/);
+  });
+  it('NOT_PROVEN si le modèle est absent, corrompu ou non référencé', () => {
+    expect(evaluate3d({ ...ok, glb: { status: 404, buffer: Buffer.alloc(0) } }).verdict).toBe('NOT_PROVEN');
+    expect(evaluate3d({ ...ok, glb: { status: 200, buffer: Buffer.from('<html>' + ' '.repeat(40)) } }).verdict).toBe('NOT_PROVEN');
+    expect(evaluate3d({ ...ok, scripts: ['rien'] }).verdict).toBe('NOT_PROVEN');
+    expect(evaluate3d({ ...ok, health: health('old') }).verdict).toBe('NOT_PROVEN');
+  });
+});
