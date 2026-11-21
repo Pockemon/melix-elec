@@ -11,11 +11,10 @@
     "preview": "vite preview",
     "test": "vitest run",
     "prove-mx-site-01": "node scripts/prove-mx-site-01.mjs",
+    "prove-mx-gal-01": "node scripts/prove-mx-gal-01.mjs",
     "prove-mx-devis-01": "node scripts/prove-mx-devis-01.mjs"
   },
   "dependencies": {
-    "@fontsource-variable/dm-sans": "^5.3.0",
-    "@fontsource/instrument-serif": "^5.3.0",
     "three": "^0.187.0"
   },
   "devDependencies": {
@@ -27,6 +26,7 @@
   },
   "bin": {
     "prove-mx-site-01": "scripts/prove-mx-site-01.mjs",
+    "prove-mx-gal-01": "scripts/prove-mx-gal-01.mjs",
     "prove-mx-devis-01": "scripts/prove-mx-devis-01.mjs"
   }
 }

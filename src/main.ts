@@ -29,6 +29,5 @@ document.getElementById('mentions-link')?.addEventListener('click', () => {
   document.getElementById('mentions')!.hidden = false;
 });
 
-// Le chargement de Three.js n'est pas bloquant pour le premier rendu.
-void import('./hero3d').then((m) => m.initHero());
-void import('./viewer').then((m) => m.initViewer());
+// Three.js se charge hors du chemin critique ; la liste des œuvres reste le repli sans WebGL.
+void import('./galerie').then((m) => m.initGalerie());

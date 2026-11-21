@@ -5,3 +5,16 @@ export const REQUIRED_SECTIONS: string[];
 export const REQUIRED_TEXTS: string[];
 export function checkPage(html: string): string[];
 export function judge(input: { health: { status?: string; sha?: string } | null; deliverySha?: string; missing: string[] }): { verdict: 'SATISFIED' | 'NOT_PROVEN'; facts: string[] };
+export const GAL_TAGLINE: string;
+export const GAL_MIN_OEUVRES: number;
+export function parseGalerie(html: string): { body: string; oeuvres: { src: string; alt: string; titre: string; matiere: string; annee: string }[] } | null;
+export interface GalerieObs { mode?: string; index?: string; reducedMotion?: string; gl: boolean; statique: boolean }
+export function observeGalerie(dom: string): GalerieObs | null;
+export function evaluateGalerie(o: {
+  expectedSha: string;
+  health: { status: number; body: string } | null;
+  page: { status: number; body: string } | null;
+  runtime: { liste?: GalerieObs | null; normal?: GalerieObs | null; reduit?: GalerieObs | null };
+  images: { src: string; status: number; type: string }[];
+}): { verdict: 'SATISFIED' | 'NOT_PROVEN'; facts: string[]; failures: string[] };
+export function formatGalerie(r: { verdict: string; facts: string[]; failures: string[] }): string;

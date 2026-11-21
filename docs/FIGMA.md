@@ -1,13 +1,10 @@
 # Design — source de vérité
 
-- Fichier Figma : `mqrcZMrSenBLMdWJlZ4gxD` (« MELIX ELEC — Vitrine fabrication 3D grand format »)
-- Desktop 1440 : nœud `2:14`
-- Mobile 390 : nœud `3:2`
-- Tokens et typographies : voir `docs/design/SPEC.md` (palette pastel chaude à dominante claire, Instrument Serif pour les titres, DM Sans pour le texte).
+- Fichier Figma : `mqrcZMrSenBLMdWJlZ4gxD` (« MELIX ELEC — Vitrine fabrication 3D grand format »), page « Galerie 2026-11 » : frames 1440 et 390 (nœuds `2:14` et `3:2`).
+- Tokens et typographies : voir `docs/design/SPEC.md` (graphite #1E1F1D / os #F3EFE7 / cuivre #B4703A, Cormorant Garamond et Inter). Ils reprennent la spécification de l'arbitrage Cowork du 21/11 ; les frames « Galerie 2026-11 » sont ajoutées au Figma en parallèle.
 
 ## Règles
 - L'implémenteur ne réinterprète pas le design. Une contrainte technique se résout en préservant l'intention visuelle.
-- La scène 3D du héros est une **illustration** : elle doit être présentée comme telle (mention visible). Ce n'est jamais une photographie d'un objet fini.
-- Les photos de la section Réalisations sont des pièces réelles de l'atelier (`public/images/`). Aucune image générée ne doit être présentée comme réelle.
-- Le casse-noisette de 1,20 m porte le badge « Fabrication en cours » tant qu'il n'est pas terminé.
+- Plus de figurine low-poly, de palette pastel ni de grosse typographie (décision de Jean du 18/11).
+- Les photos de la galerie sont des pièces réelles de l'atelier (`public/images/`). Aucune image générée ne doit être présentée comme réelle.
 - Les capacités affichées sont limitées à ce qui est vérifié. Pas de délai, de dimension maximale ni de certification non validés.

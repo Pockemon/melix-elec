@@ -7,7 +7,7 @@
       "name": "accueil",
       "url": "https://melix-elec.com/",
       "expectStatus": 200,
-      "expectBody": "Vos créations prennent une autre dimension"
+      "expectBody": "Des pièces uniques, conçues et fabriquées sur mesure"
     }
   ],
   "userInterface": "VISUAL",
